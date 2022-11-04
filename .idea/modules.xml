@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../hardhat-boilerplate/.idea/hardhat-boilerplate.iml" filepath="$PROJECT_DIR$/../hardhat-boilerplate/.idea/hardhat-boilerplate.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/sidekik.iml" filepath="$PROJECT_DIR$/.idea/sidekik.iml" />
     </modules>
   </component>
