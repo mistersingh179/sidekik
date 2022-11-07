@@ -48,6 +48,7 @@ Input & Output
 - anything which can be collapsed, should be collapsed by default
 - button to expand
 - row level button toggle expand & collapse of all inputs and outputs
+- look at `decimals` to build specific conversions
 
 wallet
 - inject any wallet using private key
