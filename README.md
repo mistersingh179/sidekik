@@ -1,11 +1,11 @@
 # Sidekik
 
-A dev-tool to interact with smart contracts. 
+A dev-tool to interact with smart contracts – http://app.sidekik.xyz
 
 ## Build
 
 - `npm run build`
-- `cd build && serve .`
+- `cd build && npx serve .`
 - Browse to http://localhost:3000
 
 ## Publish

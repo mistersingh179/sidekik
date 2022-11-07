@@ -79,6 +79,7 @@ wallet
 - outputs
   - in gas conversion allow user to customize price of token
   - in gas conversion allow use to add a token
+  - if string, then check for base64 encoded data pointing to json or image etc.
 
 - refactor
   - contract function, each function should have its state in its own component
@@ -147,6 +148,7 @@ wallet
 
 # ui
 - balance input box should be dynamiclly sized
+- show which chain connected to icon like polygon, etherscan etc.
 
 # features
 - implement hardhat helpers

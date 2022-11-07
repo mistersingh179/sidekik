@@ -180,7 +180,6 @@ export default function SetupContractManually({ editContract }) {
 
   useEffect(() => {
     if (editContract && modalDisclosure.isOpen) {
-      debugger;
       setName(editContract);
       setAddress(contracts[editContract].address || "");
       setAbi(JSON.stringify(contracts[editContract].abi) || "");

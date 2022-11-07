@@ -254,8 +254,44 @@ export const GlobalProvider = (props) => {
     // name of the file is contract
     // and content is just ABI array
 
-    // for contract under chain id kind of file
+    // and contracts object has key for contract name and address & abi as values
+    // this is hardhat-deploy --export-all
+    if (_.isArray(fileJsonObj[chainId])) {
+      for (const item of fileJsonObj[chainId]) {
+        if (item.chainId == chainId && _.isObject(item.contracts)) {
+          for (const key of Object.keys(item.contracts)) {
+            const address = item.contracts[key]["address"];
+            const abi = item.contracts[key]["abi"];
+            const name = key;
+            if (isAddress(address) && _.isArray(abi) && _.isString(name)) {
+              addContractAddress(name, address);
+              const found = await doesContractCodeExist(chainProvider, address);
+              markContractFound(name, found);
+              addContractAbi(name, abi);
+            }
+          }
+        }
+      }
+    }
+
+    // and contracts object has key for contract name and address & abi as values
+    // this is hardhat-deploy --export
+    if (fileJsonObj.chainId == chainId && _.isObject(fileJsonObj.contracts)) {
+      for (const key of Object.keys(fileJsonObj.contracts)) {
+        const address = fileJsonObj.contracts[key]["address"];
+        const abi = fileJsonObj.contracts[key]["abi"];
+        const name = key;
+        if (isAddress(address) && _.isArray(abi) && _.isString(name)) {
+          addContractAddress(name, address);
+          const found = await doesContractCodeExist(chainProvider, address);
+          markContractFound(name, found);
+          addContractAbi(name, abi);
+        }
+      }
+    }
+
     if (_.isObject(fileJsonObj?.[chainId])) {
+      // for contract under chain id kind of file
       for (const key of Object.keys(fileJsonObj[chainId])) {
         const address = fileJsonObj[chainId][key]["address"];
         const abi = fileJsonObj[chainId][key]["abi"];

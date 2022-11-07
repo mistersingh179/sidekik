@@ -1,8 +1,8 @@
 import { getChain } from "evm-chains";
 
 const chainNames = {
-  1337: 'hardhat',
-  31337: 'hardhat',
+  1337: 'localhost',
+  31337: 'localhost',
 }
 
 export default function getChainName(chainid){
