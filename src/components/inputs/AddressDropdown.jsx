@@ -27,10 +27,6 @@ export default function AddressDropdown({
     impersonatedAddresses,
   } = useContext(GlobalContext);
 
-  const contractAddresses = Object.entries(contracts).map(
-    ([k, v]) => v.address
-  );
-
   const buildOptionObj = (addr) => ({
     value: addr,
     label: buildDisplayAddress(addr),
@@ -123,7 +119,6 @@ export default function AddressDropdown({
       selectedOptionStyle={"color"}
       useBasicStyles
       hasStickyGroupHeaders
-      w={"full"}
       menuPlacement={"auto"}
       menuPortalTarget={document.body}
       styles={{

@@ -55,6 +55,7 @@ const OPT_ICONS = {
   number: "#",
   gwei: <Icon as={RiGasStationLine} />,
   eth: EtherSymbol,
+  // eth: <Text fontSize={'sm'}>10<sup>18</sup></Text>,
   usdc: "$",
   date: <Icon as={RiCalendarCheckFill} />,
   "datetime-utc": <Icon as={RiCalendarCheckLine} />,

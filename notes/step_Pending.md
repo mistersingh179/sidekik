@@ -160,6 +160,7 @@ wallet
   - or Hstack with table in center and we can take full space
   - then table inputs needs to take fixed space
   - we want the table to start with the width it takes, and then grow, but input boxes are 100% unless we tell them their size. so size should be 400px when blank, else auto, i.e. 100%
+  - try setting width on td to sm, md, lg based on size of screen
 - allow inputs can become small when on small width
 - for inputs remove placeholders to show type and move that to place holder when on small
 - 
@@ -173,7 +174,8 @@ wallet
 - ui notification saying that code has been updated. should say that X number of functions added, Y number removed & Z changed.
 - for hardhat addresses use label saying Hardhat address 0-20
 - for impersonated addresses & output addresses do ens lookup and show picture
-
+- if a verb, then sibblings are past, present & future
+  - plural should match singular, so teeth & tooth should be grouped together
 - implement hardhat helpers
   - move time forward
   - move time backward
@@ -186,3 +188,8 @@ wallet
   - can we fork chain from UI using hardhat functions
   - make snapshots, save & restore
 - expose all evm functions
+
+# bugs
+- display Number should not say Eth, but say 10^18 etc.
+  - for example output of Dai should say 55 Million Dai, not 55 Million Eth
+  - for usdc, it should say assuming the input is Wei, then using Eth/Usdc price, this is USDC: X

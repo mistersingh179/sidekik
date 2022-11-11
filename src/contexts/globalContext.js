@@ -140,7 +140,7 @@ export const GlobalProvider = (props) => {
   const dirHandles = handles.filter((handle) => handle.kind === "directory");
   const fileHandles = handles.filter((handle) => handle.kind === "file");
 
-  const [filePollingInterval, updateFilePollingInterval] = useState(null);
+  const [filePollingInterval, updateFilePollingInterval] = useState(1000);
   useInterval(() => readAgain(), filePollingInterval);
 
   const [readyToReadAgain, setReadyToReadAgain] = useState(false);

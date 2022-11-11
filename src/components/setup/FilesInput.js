@@ -124,7 +124,10 @@ export default function FilesInput(props) {
         {!filePollingInterval && (
           <Text>Set to poll & re-read every few seconds</Text>
         )}
-        {filePollingInterval && (
+        {filePollingInterval && handles.length == 0 && (
+          <Text>Will poll & read files every {filePollingInterval} ms</Text>
+        )}
+        {filePollingInterval && handles.length > 0 && (
           <Text>Re-reading files every {filePollingInterval} ms</Text>
         )}
         <Switch

@@ -921,7 +921,7 @@ export default function FunctionsTable({ contractName }) {
         contracts={contracts}
         contractName={contractName}
       />
-      <Box w={"full"}>
+      <Box w={"full"} mb={500}>
         <Table
           size={"md"}
           variant="simple"
