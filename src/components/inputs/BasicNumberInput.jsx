@@ -55,8 +55,8 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
   const handleInputChange = () => {
     // let inputValue = inputRef.current.value || "0";
     let inputValue = inputRef.current.value;
-    if(!inputValue){
-      setInput("")
+    if (!inputValue) {
+      setInput("");
     } else if (format === OPTS.number) {
       inputValue = inputValue.replace(/\.(.*)$/gm, "");
       setInput(BigNumber.from(inputValue));
@@ -108,13 +108,27 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
     inputElementType = "datetime-local";
   }
 
+  let label = `Will submit: ${value.toString()}`;
+  if (format === OPTS.usdc) {
+    label = (
+      <Text>
+        Will submit: {value.toString()}. Calculated by converting the inputted
+        number first to ETH by using ETH/USD price of ${ethPriceInUsd} and then
+        converting 1 ETH to 10<sup>18</sup> Wei.
+      </Text>
+    );
+  }
+
   return (
     <>
-      <Tooltip label={`Will submit: ${value.toString()}`} hasArrow>
+      <Tooltip label={label} hasArrow>
         <HStack>
           <InputGroup>
             {leftElementChild && (
-              <InputLeftElement color={'gray.400'} children={leftElementChild} />
+              <InputLeftElement
+                color={"gray.400"}
+                children={leftElementChild}
+              />
             )}
             <Input
               ref={inputRef}
@@ -126,14 +140,16 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
 
           <Menu>
             <MenuButton as={IconButton} icon={<Icon as={IoOptions} />} />
-            <MenuList zIndex={'dropdown'}>
+            <MenuList zIndex={"dropdown"}>
               <MenuOptionGroup
                 type={"radio"}
                 value={format}
                 onChange={handleFormatChange}
               >
                 {Object.entries(OPTS).map(([k, v]) => (
-                  <MenuItemOption key={v} value={k}>{v}</MenuItemOption>
+                  <MenuItemOption key={v} value={k}>
+                    {v}
+                  </MenuItemOption>
                 ))}
               </MenuOptionGroup>
             </MenuList>

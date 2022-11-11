@@ -40,8 +40,18 @@ const {
 
 const AbiTag = ({ abi }) => {
   console.log("in AbiTag with: ", abi);
-  if (!abi) {
-    return <Badge colorScheme="red">Not Found</Badge>;
+  if (!abi || abi.length == 0) {
+    return (
+      <Tooltip
+        label={
+          `The ABI of this contract has not been uploaded. ` +
+          `You can upload additional files which have the ABI or ` +
+          `just upload your artifacts directory as they have ABI's of all contracts being used.`
+        }
+      >
+        <Badge colorScheme="red">Missing</Badge>
+      </Tooltip>
+    );
   }
   try {
     const iface = new Interface(abi);
@@ -53,7 +63,6 @@ const AbiTag = ({ abi }) => {
     return (
       <>
         <Tooltip
-          colorScheme={"green"}
           label={
             `ABI has ` +
             `${fragCount} ${pluralize("fragement", fragCount)}, ` +

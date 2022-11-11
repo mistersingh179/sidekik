@@ -4,8 +4,8 @@ import {
   Divider,
   Heading,
   HStack,
-  Spacer,
-  VStack,
+  Spacer, Stack,
+  VStack
 } from "@chakra-ui/react";
 import { useContext, useMemo } from "react";
 
@@ -31,7 +31,7 @@ export default function SetupFiles(props) {
           <Heading mb={5}>Setup Files</Heading>
           <Divider />
         </Box>
-        <HStack w={"full"} justify={"center"}>
+        <Stack direction={{'base': 'column', 'lg': 'row'}} w={"full"} justify={"center"}>
           <Spacer />
           <FilesInput />
           <Spacer />
@@ -41,7 +41,7 @@ export default function SetupFiles(props) {
               <Spacer />
             </>
           )}
-        </HStack>
+        </Stack>
       </VStack>
     </Center>
   );

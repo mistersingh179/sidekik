@@ -327,6 +327,26 @@ export const GlobalProvider = (props) => {
         const address = fileJsonObj[name];
         if (isAddress(address)) {
           addContractAddress(name, address);
+          const found = await doesContractCodeExist(chainProvider, address);
+          markContractFound(name, found);
+        }
+      }
+    }
+
+    // file with json where all keys are contract names & and all values are addresses
+    if (Object.values(fileJsonObj).length > 0) {
+      const allValuesAreAddresses = Object.values(fileJsonObj).every((val) =>
+        isAddress(val)
+      );
+      const allKeysAreStrings = Object.keys(fileJsonObj).every((val) =>
+        _.isString(val)
+      );
+      if (allValuesAreAddresses && allKeysAreStrings) {
+        for (const name of Object.keys(fileJsonObj)) {
+          const address = fileJsonObj[name];
+          addContractAddress(name, address);
+          const found = await doesContractCodeExist(chainProvider, address);
+          markContractFound(name, found);
         }
       }
     }

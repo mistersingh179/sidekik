@@ -17,6 +17,7 @@ import {
   MenuItem,
   MenuList,
   NumberInput,
+  Show,
   Table,
   TableCaption,
   TableContainer,
@@ -82,6 +83,9 @@ import BytesDisplay from "../display/BytesDisplay";
 import BytesInput from "../inputs/BytesInput";
 import InfoTable from "./InfoTable";
 import pluralize from "pluralize";
+import hash from "object-hash";
+import groupSimilarFunctionNames from "group-similar-functions";
+
 const {
   utils: { formatEther },
   constants: { AddressZero },
@@ -166,7 +170,7 @@ const Inputs = ({
       )}
       {showRaw && (
         <Code
-          maxW={"600px"}
+          maxW={"450px"}
           maxH={"400px"}
           overflowX={"auto"}
           whiteSpace={"pre"}
@@ -376,6 +380,7 @@ const TransactionError = ({ error }) => {
   const regexArr = [
     /":"(Nonce too high.*)"}}}'/,
     /:\sreverted\swith\sreason\sstring\s'(.*?)'/,
+    /Error: VM Exception while processing transaction: reverted with panic code.* \((.*)\)/,
     /Error: VM Exception while processing transaction:(.*)"},"/,
     /(sender doesn't have enough funds to send tx(.*?))\\"}}"/,
   ];
@@ -592,7 +597,9 @@ const OutputElement = ({ outputAbi, result, idx }) => {
   return (
     <>
       <HStack spacing={2} w={"full"}>
-        <Text>{`${outputAbi.name} ${type}`}</Text>
+        <Show above={"md"}>
+          <Text>{`${outputAbi.name} ${type}`}</Text>
+        </Show>
         <Elem value={result} isReadOnly />
         {/*<Text minW={'10rem'} minH={'1.5rem'} border='1px' borderColor={'gray.200'}> {result} </Text>*/}
       </HStack>
@@ -610,7 +617,7 @@ const Result = ({ resultObj, abi, eventsAbi, showRaw, isView }) => {
   } else if (isView) {
     outputElem = <Outputs outputsAbi={abi.outputs} result={result} />;
     rawOutputObj = result;
-  } else if (!isView && receipt) {
+  } else if (!isView && (receipt || result)) {
     outputElem = <TransactionReceipt receipt={receipt} eventsAbi={eventsAbi} />;
     rawOutputObj = receipt;
   }
@@ -620,7 +627,7 @@ const Result = ({ resultObj, abi, eventsAbi, showRaw, isView }) => {
       {outputElem}
       {showRaw && (
         <Code
-          maxW={"600px"}
+          maxW={"450px"}
           maxH={"400px"}
           overflowX={"auto"}
           whiteSpace={"pre"}
@@ -646,27 +653,29 @@ const FunctionExecButton = ({
   return (
     <ButtonGroup isAttached colorScheme={isView ? "blue" : "orange"}>
       <Button onClick={runFunc}>{abi.name}</Button>
-      <Menu>
-        <MenuButton as={IconButton} icon={<ChevronDownIcon />} />
-        <MenuList zIndex={"dropdown"}>
-          <MenuItem icon={<ArrowRightIcon />} onClick={runFunc}>
-            Execute Function
-          </MenuItem>
-          {!showRaw && (
-            <MenuItem icon={<ViewIcon />} onClick={toggleShowingRaw}>
-              Show Raw Inputs & Outputs
+      <Show above={"md"}>
+        <Menu>
+          <MenuButton as={IconButton} icon={<ChevronDownIcon />} />
+          <MenuList zIndex={"dropdown"}>
+            <MenuItem icon={<ArrowRightIcon />} onClick={runFunc}>
+              Execute Function
             </MenuItem>
-          )}
-          {showRaw && (
-            <MenuItem icon={<ViewOffIcon />} onClick={toggleShowingRaw}>
-              Hide Raw Inputs & Outputs
+            {!showRaw && (
+              <MenuItem icon={<ViewIcon />} onClick={toggleShowingRaw}>
+                Show Raw Inputs & Outputs
+              </MenuItem>
+            )}
+            {showRaw && (
+              <MenuItem icon={<ViewOffIcon />} onClick={toggleShowingRaw}>
+                Hide Raw Inputs & Outputs
+              </MenuItem>
+            )}
+            <MenuItem icon={<DeleteIcon />} onClick={resetHandler}>
+              Reset (Clear Inputs & Outputs)
             </MenuItem>
-          )}
-          <MenuItem icon={<DeleteIcon />} onClick={resetHandler}>
-            Reset (Clear Inputs & Outputs)
-          </MenuItem>
-        </MenuList>
-      </Menu>
+          </MenuList>
+        </Menu>
+      </Show>
     </ButtonGroup>
   );
 };
@@ -678,8 +687,7 @@ const FunctionRow = ({
   contractWriteObj,
   address,
   addOutputAddress,
-  updateLastRandIdx,
-  idx,
+  updateLastRanId,
   highlight,
   refreshAllBalances,
 }) => {
@@ -728,7 +736,7 @@ const FunctionRow = ({
   const { initiate, finished, sent, mined, hasError } = useFunctionToast(name);
 
   const runFunc = async () => {
-    updateLastRandIdx(idx);
+    updateLastRanId(abi.id);
     const inputsArray = abi.inputs.map((item) => inputs[item.name]);
     const contractObj = isView ? contractReadObj : contractWriteObj;
     try {
@@ -743,11 +751,6 @@ const FunctionRow = ({
         refreshAllBalances();
       }
 
-      dispatch({
-        type: TYPES.SET_RESULT,
-        payload: result,
-      });
-
       if (result.wait) {
         const receipt = await result.wait();
         window.receipt = receipt;
@@ -757,7 +760,13 @@ const FunctionRow = ({
           type: TYPES.SET_RECEIPT,
           payload: receipt,
         });
+      } else {
+        dispatch({
+          type: TYPES.SET_RESULT,
+          payload: result,
+        });
       }
+
       if (isView) {
         for (let item of result) {
           if (isAddress(item)) {
@@ -870,17 +879,28 @@ const ContractNotFoundError = ({ contracts, contractName }) => {
 };
 
 export default function FunctionsTable({ contractName }) {
-  const [lastRanIdx, updateLastRandIdx] = useState(null);
+  const [lastRanId, updateLastRanId] = useState(null);
   const { contracts, chainProvider, wallet, addOutputAddress } =
     useContext(GlobalContext);
   const { refreshAllBalances } = useContext(BalancesContext);
   const address = contracts[contractName]?.address ?? AddressZero;
-  const abiArray = contracts[contractName]?.abi ?? [];
-  const functions = abiArray.filter((item) => item.type === "function");
+
+  const abiArray = useMemo(
+    () => contracts[contractName]?.abi ?? [],
+    [contracts, contractName]
+  );
+
   const eventsAbi = useMemo(
     () => abiArray.filter((item) => item.type === "event"),
     [abiArray]
   );
+
+  const functions = useMemo(() => {
+    let funcs = abiArray.filter((item) => item.type === "function");
+    funcs = funcs.map((abi) => ({ ...abi, id: hash(abi) }));
+    funcs = groupSimilarFunctionNames(funcs, "name");
+    return funcs;
+  }, [abiArray]);
 
   const contractReadObj = useMemo(
     () => new ethers.Contract(address, abiArray, chainProvider),
@@ -892,7 +912,7 @@ export default function FunctionsTable({ contractName }) {
   );
 
   useEffect(() => {
-    console.log("got new functions: ", functions.length);
+    console.log("got new functions: ", functions);
   }, [functions]);
 
   return (
@@ -911,27 +931,28 @@ export default function FunctionsTable({ contractName }) {
           {/*<TableCaption>Functions read from contract's ABI</TableCaption>*/}
           <Thead>
             <Tr>
-              <Th minW={"md"}>Inputs</Th>
+              <Th>Inputs</Th>
               <Th>Function</Th>
-              <Th minW={"md"}>Outputs</Th>
+              <Th>Outputs</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {functions.map((abi, idx) => (
-              <MemoizedFunctionRow
-                eventsAbi={eventsAbi}
-                abi={abi}
-                contractReadObj={contractReadObj}
-                contractWriteObj={contractWriteObj}
-                address={address}
-                addOutputAddress={addOutputAddress}
-                key={idx}
-                idx={idx}
-                highlight={idx === lastRanIdx}
-                updateLastRandIdx={updateLastRandIdx}
-                refreshAllBalances={refreshAllBalances}
-              />
-            ))}
+            {functions.map((abi, idx) => {
+              return (
+                <MemoizedFunctionRow
+                  eventsAbi={eventsAbi}
+                  abi={abi}
+                  contractReadObj={contractReadObj}
+                  contractWriteObj={contractWriteObj}
+                  address={address}
+                  addOutputAddress={addOutputAddress}
+                  key={abi.id}
+                  highlight={abi.id === lastRanId}
+                  updateLastRanId={updateLastRanId}
+                  refreshAllBalances={refreshAllBalances}
+                />
+              );
+            })}
           </Tbody>
         </Table>
       </Box>

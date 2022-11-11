@@ -74,7 +74,7 @@ export default function FilesInput(props) {
   };
 
   const handleChangePollReRead = (evt) => {
-    updateFilePollingInterval(evt.target.checked ? 5000 : null);
+    updateFilePollingInterval(evt.target.checked ? 1000 : null);
   };
 
   const handleReadAgainClick = (evt) => {
@@ -148,6 +148,7 @@ export default function FilesInput(props) {
         </Button>
         <ReactRouterLink to={"/contracts"}>
           <Button
+            colorScheme={'teal'}
             rightIcon={<ArrowForwardIcon />}
             isDisabled={contractNames.length == 0}
           >

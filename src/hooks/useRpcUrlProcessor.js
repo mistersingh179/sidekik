@@ -10,9 +10,9 @@ export default function useRpcUrlProcessor() {
     name: null,
   });
   const processRpcUrl = useCallback(async () => {
-    console.log("checking on urlToProcess");
+    console.log("checking on urlToProcess: ", rpcUrl == null);
     try {
-      const localProvider = new ethers.providers.JsonRpcProvider(rpcUrl);
+      const localProvider = new ethers.providers.JsonRpcProvider(rpcUrl ? rpcUrl : true);
       const network = await localProvider.getNetwork();
       updateLocalProvider(localProvider);
       updateLocalNetwork(network);

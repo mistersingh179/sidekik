@@ -49,6 +49,9 @@ Input & Output
 - button to expand
 - row level button toggle expand & collapse of all inputs and outputs
 - look at `decimals` to build specific conversions
+  - use in USDC conversion
+  - tooltips for outputs
+  - labels for options
 
 wallet
 - inject any wallet using private key
@@ -136,6 +139,8 @@ wallet
 - inputs which are tuples should be collapsed on start
   - tuples should have button "expand tuple"
   - if array has tuple, should add tuple expanded
+- store hash of abi in common place, so it doesn't have to recaculate everytime it is rendered
+- dont sort functions in render
 
 # issues
 - changing address in metamask is sending us to setup page
@@ -149,8 +154,26 @@ wallet
 # ui
 - balance input box should be dynamiclly sized
 - show which chain connected to icon like polygon, etherscan etc.
+- the table is when overlflows is growing only on the right
+  - can we use flex or grid 
+  - shoud stay in center and then grow together
+  - or Hstack with table in center and we can take full space
+  - then table inputs needs to take fixed space
+  - we want the table to start with the width it takes, and then grow, but input boxes are 100% unless we tell them their size. so size should be 400px when blank, else auto, i.e. 100%
+- allow inputs can become small when on small width
+- for inputs remove placeholders to show type and move that to place holder when on small
+- 
 
 # features
+- detect proxy contract & get implementation address
+  - should work on proxy contracts
+- when not polling, still poll & show a notification on the reload button of how many changes pending
+- can we show console.logs in UI
+  - check for events on the console contract and get data from there
+- ui notification saying that code has been updated. should say that X number of functions added, Y number removed & Z changed.
+- for hardhat addresses use label saying Hardhat address 0-20
+- for impersonated addresses & output addresses do ens lookup and show picture
+
 - implement hardhat helpers
   - move time forward
   - move time backward

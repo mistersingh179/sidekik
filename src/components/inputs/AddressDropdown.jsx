@@ -50,17 +50,23 @@ export default function AddressDropdown({
         label: "Custom Addresses",
         options: customAddresses.map((addr) => buildOptionObj(addr)),
       },
-        {
-          label: "Impersonated Addresses",
-          options: impersonatedAddresses.map((addr) => buildOptionObj(addr)),
-        },
+      {
+        label: "Impersonated Addresses",
+        options: impersonatedAddresses.map((addr) => buildOptionObj(addr)),
+      },
       {
         label: "Chain Wallet Addresses",
-        options: chainAddresses.map((addr) => buildOptionObj(addr)),
+        options: chainAddresses.map((addr, idx) => ({
+          value: addr,
+          label: `${buildDisplayAddress(addr)} – Wallet ${idx}`
+        })),
       },
       {
         label: "Contract Addresses",
-        options: contractAddresses.map((addr) => buildOptionObj(addr)),
+        options: Object.entries(contracts).map(([k, v]) => ({
+          value: v.address,
+          label: `${buildDisplayAddress(v.address)} – ${k}`,
+        })),
       },
       {
         label: "Output Addresses",
@@ -117,8 +123,8 @@ export default function AddressDropdown({
       selectedOptionStyle={"color"}
       useBasicStyles
       hasStickyGroupHeaders
-      size={"md"}
       w={"full"}
+      menuPlacement={"auto"}
       menuPortalTarget={document.body}
       styles={{
         menuPortal: (provided) => ({ ...provided, zIndex: 1401 }),

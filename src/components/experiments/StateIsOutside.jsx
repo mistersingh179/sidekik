@@ -19,6 +19,10 @@ import {
   MenuDivider,
 } from '@chakra-ui/react'
 import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import groupSimilarFunctionNames from "group-similar-functions";
+
+window.groupSimilarFunctionNames = groupSimilarFunctionNames;
+
 const MyItem = React.memo(({ name, lastRanIdx, idx, highlight, callback }) => {
   // const bg = lastRanIdx === idx ? "yellow.50" : "white";
   const bg = highlight ? "yellow.50" : "white";

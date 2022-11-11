@@ -14,9 +14,9 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
-  Portal,
+  Portal, Text,
   Tooltip,
-  useClipboard,
+  useClipboard
 } from "@chakra-ui/react";
 import { CalendarIcon, CopyIcon } from "@chakra-ui/icons";
 import { AiOutlineNumber } from "react-icons/ai";
@@ -62,7 +62,7 @@ const OPT_ICONS = {
   time: <Icon as={RiTimeLine} />,
 };
 
-export default function NumberDisplay({value}) {
+export default function NumberDisplay({ value }) {
   const { ethPriceInUsd } = useContext(ExternalPriceContext);
 
   const [displayOption, updateDisplayOption] = useState("number");
@@ -70,7 +70,7 @@ export default function NumberDisplay({value}) {
   let formattedValue;
 
   if (displayOption === OPTS.number) {
-    formattedValue = (value).toString();
+    formattedValue = value.toString();
   } else if (displayOption === OPTS.eth) {
     formattedValue = Number(formatEther(value || 0)).toFixed(4);
   } else if (displayOption === OPTS.gwei) {
@@ -89,37 +89,51 @@ export default function NumberDisplay({value}) {
     formattedValue = moment.unix(value).utc().format("LTS");
   }
 
+  let label;
+  if (displayOption === OPTS.usdc) {
+    label = (
+      <Text>
+        Calculated by turning 10<sup>18</sup> Wei to 1 ETH & then using ETH/USD price of $
+        {ethPriceInUsd}
+      </Text>
+    );
+  }
+
   return (
     <Box w={"full"}>
-      <HStack>
-        <InputGroup>
+      <Tooltip label={label}>
+        <HStack>
           <InputGroup>
-            {OPT_ICONS[displayOption] && (
-              <InputLeftElement
-                color={"gray.400"}
-                children={OPT_ICONS[displayOption]}
-              />
-            )}
-            <Input isReadOnly value={formattedValue}></Input>
+            <InputGroup>
+              {OPT_ICONS[displayOption] && (
+                <InputLeftElement
+                  color={"gray.400"}
+                  children={OPT_ICONS[displayOption]}
+                />
+              )}
+              <Input isReadOnly value={formattedValue}></Input>
+            </InputGroup>
           </InputGroup>
-        </InputGroup>
-        <Menu>
-          <MenuButton as={IconButton} icon={<Icon as={IoOptions} />}>
-            Actions
-          </MenuButton>
-          <MenuList zIndex={"dropdown"}>
-            <MenuOptionGroup
-              type={"radio"}
-              value={displayOption}
-              onChange={updateDisplayOption}
-            >
-              {Object.entries(OPTS).map(([k, v]) => (
-                <MenuItemOption key={v} value={k}>{v}</MenuItemOption>
-              ))}
-            </MenuOptionGroup>
-          </MenuList>
-        </Menu>
-      </HStack>
+          <Menu>
+            <MenuButton as={IconButton} icon={<Icon as={IoOptions} />}>
+              Actions
+            </MenuButton>
+            <MenuList zIndex={"dropdown"}>
+              <MenuOptionGroup
+                type={"radio"}
+                value={displayOption}
+                onChange={updateDisplayOption}
+              >
+                {Object.entries(OPTS).map(([k, v]) => (
+                  <MenuItemOption key={v} value={k}>
+                    {v}
+                  </MenuItemOption>
+                ))}
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        </HStack>
+      </Tooltip>
     </Box>
   );
 }

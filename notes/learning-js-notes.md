@@ -281,3 +281,7 @@ will give back an object with properties `['a', 'b', a: 'a', b: 'b']`
 - if anything in the context changes, then all components which use that context will get an update
 - it may seem like each component is destructing only certain keys, but they get the whole context and thus get updated.
 - to prevent this we want to have seperate contexts.
+
+## ui flickers on render
+- if you render the component blank and then again, it will cause flicker
+- maybe you are taking 2 passes on render and one time the if doesnt return anything.

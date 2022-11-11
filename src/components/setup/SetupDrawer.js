@@ -100,7 +100,8 @@ export const RpcUrlInputBox = () => {
       }
     }
     return result;
-  }, [injectedProvider, isRpcValid]);
+  }, [injectedProvider, localNetwork, isRpcValid]);
+
   const rpcInputDisabled = !!injectedProvider;
   const RpcInputIcon = (props) => {
     let result;

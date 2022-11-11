@@ -45,16 +45,23 @@ const OPT_ICONS = {
 
 export default function Bytes32Input({ value, setInput, placeholder }) {
   const [format, updateFormat] = useState(OPTS.bytes32);
+  const [isValid, updateIsValid] = useState(true);
 
   const handleInputChange = () => {
     let inputValue = inputRef.current.value;
+    updateIsValid(true);
     if (!inputValue) {
       setInput("");
     } else if (format === OPTS.bytes32) {
       setInput(inputValue);
     } else if (format === OPTS.string) {
-      const bytes32FromString = ethers.utils.formatBytes32String(inputValue);
-      setInput(bytes32FromString);
+      try{
+        const bytes32FromString = ethers.utils.formatBytes32String(inputValue);
+        setInput(bytes32FromString);
+      }catch(e){
+        console.log('invalid value');
+        updateIsValid(false);
+      }
     }
   };
   useEffect(() => {
@@ -82,6 +89,7 @@ export default function Bytes32Input({ value, setInput, placeholder }) {
               placeholder={placeholder}
               onChange={handleInputChange}
               type={inputElementType}
+              focusBorderColor={isValid ? "" : "red.500"}
             />
           </InputGroup>
 
