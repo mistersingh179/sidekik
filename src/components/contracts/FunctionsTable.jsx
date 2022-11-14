@@ -143,7 +143,7 @@ const Inputs = ({
   }
   return (
     <VStack spacing={2} align={"stretch"} w={"full"}>
-      {inputsAbi.map((inputAbi) => {
+      {inputsAbi.map((inputAbi, idx) => {
         let Elem;
         if (inputAbi.type === "tuple") {
           Elem = InputTupleContainer;
@@ -154,7 +154,7 @@ const Inputs = ({
         }
         return (
           <Elem
-            key={inputAbi.name}
+            key={inputAbi.name || idx}
             inputAbi={inputAbi}
             value={getInput(inputAbi.name)}
             setInput={setInput.bind(this, inputAbi.name)}

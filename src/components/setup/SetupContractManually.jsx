@@ -43,7 +43,7 @@ import { AddressDropdown } from "../inputs";
 import EthNumberInput from "../inputs/EthNumberInput";
 
 const {
-  utils: { isAddress, Interface },
+  utils: { isAddress, Interface, hexStripZeros },
   constants: { AddressZero },
 } = ethers;
 
@@ -67,6 +67,22 @@ const keys = {
   avalanche: "39Z8MHAW4S9UTZRGAV74KE6SYHCISD8XQA",
 };
 
+/*
+bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1))
+a = ethers.utils.solidityKeccak256(['string'], ['eip1967.proxy.implementation'])
+b = ethers.BigNumber.from(a).sub(1)
+c = ethers.utils.hexlify(b)
+
+keccak256("org.zeppelinos.proxy.implementation")
+
+keccak256("PROXIABLE")
+ */
+const storageSlots = [
+  "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+  "0x7050c9e0f4ca769c69bd3a8ef740bc37934f8e2c036e5a723fd8ee048ed3f8c3",
+  "0xc5f16f0fcc639fa48a6947836d9850f504798523bf8c9a3a87d5876cf622bcf7",
+];
+
 export default function SetupContractManually({ editContract }) {
   const {
     addContractAddress,
@@ -83,7 +99,7 @@ export default function SetupContractManually({ editContract }) {
   const nameHandler = (evt) => setName(evt.target.value);
   const abiChangeHandler = (evt) => setAbi(evt.target.value);
 
-  const abiUrl = (name) => {
+  const abiUrl = (address, name) => {
     if (name === "etherscan") {
       return `https://api.etherscan.io/api?module=contract&action=getabi&address=${address}&apikey=${keys.etherscan}`;
     } else if (name === "goerli") {
@@ -105,13 +121,26 @@ export default function SetupContractManually({ editContract }) {
     }
   };
 
-  const abiServiceHandler = async (option) => {
-    if (option === null) {
+  const abiServiceHandler = async ({ label, value }) => {
+    if (!value) {
       return;
     }
-    const { label, value } = option;
-    console.log("in abi service handler with: ", value);
-    const url = abiUrl(value);
+    const storageValuePromises = storageSlots.map((storageSlot) =>
+      chainProvider.getStorageAt(address, storageSlot)
+    );
+    let storageValues = await Promise.all(storageValuePromises);
+    storageValues = storageValues.map((storageValue) =>
+      hexStripZeros(storageValue)
+    );
+    const storageValue = storageValues.find((sv) => sv != "0x");
+    let contractAddress = address;
+    if (storageValue && isAddress(storageValue)) {
+      console.log("we have an impl address. will use that: ", storageValue);
+      contractAddress = storageValue;
+    }
+
+    console.log("in abi service handler with: ", value, contractAddress);
+    const url = abiUrl(contractAddress, value);
     const response = await fetch(url);
     const body = await response.json();
     if (body.status === "1" && body.result) {

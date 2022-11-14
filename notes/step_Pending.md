@@ -188,6 +188,10 @@ wallet
   - can we fork chain from UI using hardhat functions
   - make snapshots, save & restore
 - expose all evm functions
+- auto add any contract on uniswap
+- get money of any token on uniswap
+- add custom contracts you want to fetch
+- add custom tokens you want to fetch
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

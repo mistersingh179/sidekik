@@ -28,7 +28,7 @@ const TYPES = {
 
 export default function useContractFileData() {
   const reducer = (state, action) => {
-    console.log("in reducer with: ", action);
+    console.debug("in reducer with: ", action);
 
     switch (action.type) {
       case TYPES.ADD_CONTRACT: {
