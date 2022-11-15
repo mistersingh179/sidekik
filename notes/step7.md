@@ -21,6 +21,10 @@
 - show units when parsing
 - no money should have better
   - impersonated account, had no money
+- copy address of contract easily
+- wei <-> $
+- usdc <-> $
+- 
 
 ## features
 - when impersonating & has no eth, add eth.
@@ -30,4 +34,14 @@
 
 ## bugs
 - why is polling making USDC & DAI slow?
-
+  - current on every poll we check chain if contracts exist
+  - and then we update the state with their "found" value
+  - this causes slowness as DOM is changing
+  - Temp fix - stop this checking
+  - Long term fix is that we have seperate poll for existance check
+    - this poll is slower
+    - it makes requests to check in parallel
+    - it handles any failed requests
+    - does not change state when values is not changing
+  - struct broke app when it had bytes32
+ 

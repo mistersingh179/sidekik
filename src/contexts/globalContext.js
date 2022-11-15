@@ -172,7 +172,8 @@ export const GlobalProvider = (props) => {
 
   const readAgain = async (evt) => {
     console.debug("in readAgain");
-    reCheckAllContractsExistence();
+    // temp stopping this check
+    // reCheckAllContractsExistence();
     for (const handle of handles) {
       if (handle.kind === "directory") {
         await readDirContent(handle);
