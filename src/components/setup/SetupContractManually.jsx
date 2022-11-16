@@ -57,6 +57,7 @@ const options = [
   { label: "Ftmscan", value: "fantom" },
   { label: "Ftmscan (testnet)", value: "testnetfantom" },
   { label: "snowtrace", value: "avalanche" },
+  { label: "Arbiscan", value: "arbiscan" },
 ];
 
 const keys = {
@@ -65,6 +66,7 @@ const keys = {
   binance: "2H977DDDEQWX7H32M9XIT5EW43STX8DAJH",
   fantom: "XCV6GYVQFUT47KKCYF6HGC8TQXI95YMVG4",
   avalanche: "39Z8MHAW4S9UTZRGAV74KE6SYHCISD8XQA",
+  arbiscan: "1BHWVIS2Y35BNP8TIUJXWR6Q6995BGTB6I",
 };
 
 /*
@@ -118,6 +120,8 @@ export default function SetupContractManually({ editContract }) {
       return `https://api-testnet.ftmscan.com/api?module=contract&action=getabi&address=${address}&apikey=${keys.fantom}`;
     } else if (name === "avalanche") {
       return `https://api.snowtrace.io/api?module=contract&action=getabi&address=${address}&apikey=${keys.avalanche}`;
+    } else if (name === "arbiscan") {
+      return `https://api.arbiscan.io/api?module=contract&action=getabi&address=${address}&apikey=${keys.arbiscan}`;
     }
   };
 

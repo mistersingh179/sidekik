@@ -14,35 +14,37 @@
   - update balance when it changes on an impersonated account ✅
 - work with proxy contracts ✅
 - dai contract has inputs with no name. key issue ✅
+- add arbiscan ✅
+
+## bug
+- Temp fix - stop this checking ✅
+- app breaks when there is a struct with bytes32 & bytes ✅
 
 ------------------------------------------------
 
 ## ui
 - show units when parsing
 - no money should have better
-  - impersonated account, had no money
 - copy address of contract easily
 - wei <-> $
 - usdc <-> $
 
+Input side you enter a number, and you tell us what unit you are entering in.
+We then convert what you have to what we need.
+e.g. 
+- Eth <-> wei
+here you are typing in Eth and you want us to conver to Wei
+so we just divide it by 10^18 by doing parseUint
 
 ## features
 - think/research/prototype on providing a pre-setup link for a forking
+- should we change chain to fetch from be same as your own chain
+- how can we deploy from remix to our chain
 
 ## bugs
-- why is polling making USDC & DAI slow?
-  - current on every poll we check chain if contracts exist
-  - and then we update the state with their "found" value
-  - this causes slowness as DOM is changing
-  - Temp fix - stop this checking
-  - Long term fix: have separate poll for contract "found" check
-    - this poll should do slowly
-    - should requests to check in parallel for every contract
-    - handle any failed requests
-    - should not change state when values have not changing
-  - app breaks when there is a struct with bytes32
  
 ## website
  - getting started videos
    - truffle
    - hardhat
+   - foundary

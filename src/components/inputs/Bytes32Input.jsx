@@ -47,6 +47,10 @@ export default function Bytes32Input({ value, setInput, placeholder }) {
   const [format, updateFormat] = useState(OPTS.bytes32);
   const [isValid, updateIsValid] = useState(true);
 
+  if (!value) {
+    value = '';
+  }
+
   const handleInputChange = () => {
     let inputValue = inputRef.current.value;
     updateIsValid(true);

@@ -201,3 +201,12 @@ wallet
 - display Number should not say Eth, but say 10^18 etc.
   - for example output of Dai should say 55 Million Dai, not 55 Million Eth
   - for usdc, it should say assuming the input is Wei, then using Eth/Usdc price, this is USDC: X
+- why is polling making USDC & DAI slow?
+- current on every poll we check chain if contracts exist
+- and then we update the state with their "found" value
+- this causes slowness as DOM is changing
+- Long term fix: have separate poll for contract "found" check
+  - this poll should do slowly
+  - should requests to check in parallel for every contract
+  - handle any failed requests
+  - should not change state when values have not changing
