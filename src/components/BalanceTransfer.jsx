@@ -39,10 +39,11 @@ import GlobalContext from "../contexts/globalContext";
 import ChainAddressesDropdown from "./inputs/ChainAddressesDropdown";
 import { buildDisplayAddress } from "../helpers";
 import { BiTransfer } from "react-icons/bi";
+import { getErrorString } from "../helpers/extractMessgeFromError";
 
 const {
   BigNumber,
-  utils: { isAddress, parseEther, formatEther, parseUnits },
+  utils: { isAddress, parseEther, formatEther, parseUnits, hexValue },
   constants: { AddressZero, EtherSymbol },
 } = ethers;
 
@@ -57,7 +58,7 @@ export default function BalanceTransfer(props) {
 
   const { getFormattedBalance, refreshAllBalances } =
     useContext(BalancesContext);
-  const { chainProvider } = useContext(GlobalContext);
+  const { chainProvider, isHardhat } = useContext(GlobalContext);
 
   const toast = useToast();
   const toastRef = useRef();
@@ -75,7 +76,9 @@ export default function BalanceTransfer(props) {
       title: "Transfer Successful",
       isClosable: true,
       status: "success",
-      description: `Tx Hash: ${buildDisplayAddress(result.hash)}`,
+      description: result.hash
+        ? `Tx Hash: ${buildDisplayAddress(result.hash)}`
+        : "",
     });
   };
   const failureToast = (error) => {
@@ -86,6 +89,26 @@ export default function BalanceTransfer(props) {
       status: "error",
       description: error.toString(),
     });
+  };
+
+  const setBalance = async () => {
+    onClose();
+    setError();
+
+    try {
+      loadingToast();
+      const result = await chainProvider.send("hardhat_setBalance", [
+        to,
+        hexValue(amount),
+      ]);
+      console.log("setBalance result is: ", result);
+      successToast(result);
+    } catch (e) {
+      failureToast(getErrorString(e));
+      setError(getErrorString(e));
+      onOpen();
+    }
+    refreshAllBalances();
   };
 
   const transferHandler = async () => {
@@ -102,11 +125,19 @@ export default function BalanceTransfer(props) {
       console.log("transfer result: ", result);
       successToast(result);
     } catch (e) {
-      failureToast(e);
-      setError(e);
+      failureToast(getErrorString(e));
+      setError(getErrorString(e));
       onOpen();
     }
     refreshAllBalances();
+  };
+
+  const cleanUp = () => {
+    setError();
+    setFrom();
+    setTo();
+    setAmount();
+    onClose();
   };
 
   return (
@@ -120,6 +151,7 @@ export default function BalanceTransfer(props) {
       <Modal
         isOpen={modalDisclosure.isOpen}
         onClose={modalDisclosure.onClose}
+        onCloseComplete={cleanUp}
         preserveScrollBarGap={true}
       >
         <ModalOverlay />
@@ -168,9 +200,18 @@ export default function BalanceTransfer(props) {
                   <AlertIcon />
                   <Box>
                     <AlertTitle>Error!</AlertTitle>
-                    <AlertDescription wordBreak={"break-all"}>
-                      {error?.toString()}
-                    </AlertDescription>
+                    {isHardhat && (
+                      <AlertDescription wordBreak={"break-word"}>
+                        The transfer of balance failed. This is common when the
+                        receiver is a contract which doesn't accept Eth. Do you
+                        want to use force and just set the balance?
+                      </AlertDescription>
+                    )}
+                    {!isHardhat && (
+                      <AlertDescription>
+                        {error}
+                      </AlertDescription>
+                    )}
                   </Box>
                   <CloseButton
                     alignSelf="flex-start"
@@ -193,6 +234,16 @@ export default function BalanceTransfer(props) {
             >
               Transfer
             </Button>
+            {isHardhat && !!error && (
+              <Button
+                colorScheme={"orange"}
+                mr={3}
+                disabled={!from || !to || !amount}
+                onClick={setBalance}
+              >
+                Set Balance
+              </Button>
+            )}
             <Button onClick={modalDisclosure.onClose}>Close</Button>
           </ModalFooter>
         </ModalContent>

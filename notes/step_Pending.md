@@ -192,6 +192,10 @@ wallet
 - get money of any token on uniswap
 - add custom contracts you want to fetch
 - add custom tokens you want to fetch
+- see mempool
+- miner gas payment
+- can we show code inline
+- can we show natspec inline
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

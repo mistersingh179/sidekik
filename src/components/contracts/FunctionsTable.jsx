@@ -85,6 +85,7 @@ import InfoTable from "./InfoTable";
 import pluralize from "pluralize";
 import hash from "object-hash";
 import groupSimilarFunctionNames from "group-similar-functions";
+import extractMessageFromError from "../../helpers/extractMessgeFromError";
 
 const {
   utils: { formatEther },
@@ -358,74 +359,9 @@ const TransactionReceipt = ({ receipt, eventsAbi }) => {
 };
 
 const TransactionError = ({ error }) => {
-  const output = {
-    method: error?.method || "",
-    reason: error?.reason || "",
-    message: error.message || "",
-    code: error.code || "",
-    argument: error.argument || "",
-  };
 
-  const USELESS_REASON =
-    "missing revert data in call exception; Transaction reverted without a reason string";
-
-  if (
-    output.reason === USELESS_REASON &&
-    output.message &&
-    output.message !== output.reason
-  ) {
-    output.reason = "";
-  }
-
-  const regexArr = [
-    /":"(Nonce too high.*)"}}}'/,
-    /:\sreverted\swith\sreason\sstring\s'(.*?)'/,
-    /Error: VM Exception while processing transaction: reverted with panic code.* \((.*)\)/,
-    /Error: VM Exception while processing transaction:(.*)"},"/,
-    /(sender doesn't have enough funds to send tx(.*?))\\"}}"/,
-  ];
-
-  let regexResult;
-  for (let regex of regexArr) {
-    if ((regexResult = regex.exec(output.reason)?.[1])) {
-      output.reason = regexResult;
-    }
-    if ((regexResult = regex.exec(output.message)?.[1])) {
-      output.message = regexResult;
-    }
-  }
-
-  console.log("output: ", output);
-
-  if (output.message === output.reason) {
-    output.message = "";
-  }
-
-  if (output?.reason?.length > 0 && output?.message?.length > 0) {
-    if (output.message.indexOf(output.reason) == 0) {
-      output.message = "";
-    }
-  }
-
-  if (output?.reason?.length > 0) {
-    if (
-      output.method === "estimateGas" &&
-      output.code === "UNPREDICTABLE_GAS_LIMIT"
-    ) {
-      output.method = "";
-      output.code = "";
-    }
-  }
-
-  if (output?.message?.length > 0) {
-    if (
-      output.reason === "processing response error" &&
-      output.code === "SERVER_ERROR"
-    ) {
-      output.reason = "";
-      output.code = "";
-    }
-  }
+  const extractedErrorObj = extractMessageFromError(error);
+  console.log("final extractedErrorObj is: ", extractedErrorObj)
 
   return (
     <VStack
@@ -441,7 +377,7 @@ const TransactionError = ({ error }) => {
         <AlertTitle>Error!</AlertTitle>
         <AlertDescription>There was an error running this Tx.</AlertDescription>
       </Alert>
-      {Object.entries(output).map(([key, value]) => (
+      {Object.entries(extractedErrorObj).map(([key, value]) => (
         <Box key={key}>
           {value && (
             <HStack w={"full"}>
