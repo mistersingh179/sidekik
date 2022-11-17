@@ -196,6 +196,8 @@ wallet
 - miner gas payment
 - can we show code inline
 - can we show natspec inline
+- get code from transaction
+- think, how can we tie this transaction to an outside event and fire it
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

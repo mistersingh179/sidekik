@@ -4,6 +4,9 @@
 - make polling on by default ✅
 - add some space at bottom ✅
 - not enough gas error needs formatting ✅
+- show units when parsing ✅
+- seperate mwei, usdc & decimals to USD ✅
+- refactor numberDisplay & numberInput ✅
 
 ## features
  - ga ✅
@@ -23,18 +26,6 @@
 ------------------------------------------------
 
 ## ui
-- show units when parsing
-- no money should have better
-- copy address of contract easily
-- wei <-> $
-- usdc <-> $
-
-Input side you enter a number, and you tell us what unit you are entering in.
-We then convert what you have to what we need.
-e.g. 
-- Eth <-> wei
-here you are typing in Eth and you want us to conver to Wei
-so we just divide it by 10^18 by doing parseUint
 
 ## features
 - think/research/prototype on providing a pre-setup link for a forking
@@ -48,3 +39,5 @@ so we just divide it by 10^18 by doing parseUint
    - truffle
    - hardhat
    - foundary
+
+## some example with chainlink

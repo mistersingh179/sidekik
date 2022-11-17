@@ -14,9 +14,10 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
-  Portal, Text,
+  Portal,
+  Text,
   Tooltip,
-  useClipboard
+  useClipboard,
 } from "@chakra-ui/react";
 import { CalendarIcon, CopyIcon } from "@chakra-ui/icons";
 import { AiOutlineNumber } from "react-icons/ai";
@@ -34,34 +35,17 @@ import {
 } from "react-icons/ri";
 import { GlobalContext } from "../../contexts";
 import ExternalPriceContext from "../../contexts/externalPriceContext";
-
+import { BsMegaphone } from "react-icons/bs";
+import {
+  OPT_ICONS,
+  OPTS,
+  OPTS_DISPLAY_VALUES
+} from "../../helpers/numberOptions";
 const {
   utils: { formatEther, formatUnits },
   constants: { EtherSymbol },
 } = ethers;
 
-const OPTS = {
-  number: "number",
-  gwei: "gwei",
-  eth: "eth",
-  usdc: "usdc",
-  date: "date",
-  "datetime-utc": "datetime-utc",
-  "datetime-local": "datetime-local",
-  time: "time",
-};
-
-const OPT_ICONS = {
-  number: "#",
-  gwei: <Icon as={RiGasStationLine} />,
-  eth: EtherSymbol,
-  // eth: <Text fontSize={'sm'}>10<sup>18</sup></Text>,
-  usdc: "$",
-  date: <Icon as={RiCalendarCheckFill} />,
-  "datetime-utc": <Icon as={RiCalendarCheckLine} />,
-  "datetime-local": <Icon as={RiCalendarCheckLine} />,
-  time: <Icon as={RiTimeLine} />,
-};
 
 export default function NumberDisplay({ value }) {
   const { ethPriceInUsd } = useContext(ExternalPriceContext);
@@ -76,6 +60,8 @@ export default function NumberDisplay({ value }) {
     formattedValue = Number(formatEther(value || 0)).toFixed(4);
   } else if (displayOption === OPTS.gwei) {
     formattedValue = Number(formatUnits(value || 0, 9)).toFixed(4);
+  } else if (displayOption === OPTS.mwei) {
+    formattedValue = Number(formatUnits(value || 0, 6)).toFixed(4);
   } else if (displayOption === OPTS.usdc) {
     formattedValue = Number(
       parseFloat(formatEther(value)) * ethPriceInUsd
@@ -86,16 +72,14 @@ export default function NumberDisplay({ value }) {
     formattedValue = moment.unix(value).format();
   } else if (displayOption === OPTS.date) {
     formattedValue = moment.unix(value).utc().format("YYYY-MM-DD");
-  } else if (displayOption === OPTS.time) {
-    formattedValue = moment.unix(value).utc().format("LTS");
   }
 
   let label;
   if (displayOption === OPTS.usdc) {
     label = (
       <Text>
-        Calculated by turning 10<sup>18</sup> Wei to 1 ETH & then using ETH/USD price of $
-        {ethPriceInUsd}
+        Calculated by first converting the outputted wei to ETH  & then converting that ETH to USD by using
+        ETH/USD price of ${ethPriceInUsd}
       </Text>
     );
   }
@@ -127,7 +111,7 @@ export default function NumberDisplay({ value }) {
               >
                 {Object.entries(OPTS).map(([k, v]) => (
                   <MenuItemOption key={v} value={k}>
-                    {v}
+                    {OPTS_DISPLAY_VALUES[k]}
                   </MenuItemOption>
                 ))}
               </MenuOptionGroup>

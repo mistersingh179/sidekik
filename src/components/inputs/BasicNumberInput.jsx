@@ -22,24 +22,24 @@ import { ethers } from "ethers";
 import moment from "moment/moment";
 import { GlobalContext } from "../../contexts";
 import { CalendarIcon } from "@chakra-ui/icons";
-import { RiGasStationLine } from "react-icons/ri";
+import {
+  RiCalendarCheckFill,
+  RiCalendarCheckLine,
+  RiGasStationLine, RiTimeLine
+} from "react-icons/ri";
 import ExternalPriceContext from "../../contexts/externalPriceContext";
+import { BsFillMegaphoneFill, BsMegaphone } from "react-icons/bs";
+import {
+  OPT_ICONS,
+  OPTS,
+  OPTS_DISPLAY_VALUES
+} from "../../helpers/numberOptions";
 
 const {
   BigNumber,
   utils: { parseEther, formatEther, parseUnits },
   constants: { AddressZero, EtherSymbol },
 } = ethers;
-
-const OPTS = {
-  number: "number",
-  gwei: "gwei",
-  eth: "eth",
-  usdc: "usdc",
-  date: "date",
-  "datetime-utc": "datetime-utc",
-  "datetime-local": "datetime-local",
-};
 
 export default function BasicNumberInput({ value, setInput, placeholder }) {
   const { ethPriceInUsd } = useContext(ExternalPriceContext);
@@ -64,6 +64,8 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
       setInput(parseEther(inputValue));
     } else if (format === OPTS.gwei) {
       setInput(parseUnits(inputValue, 9));
+    } else if (format === OPTS.mwei) {
+      setInput(parseUnits(inputValue, 6));
     } else if (format === OPTS.usdc) {
       const wei = ethers.constants.WeiPerEther.div(parseInt(ethPriceInUsd)).mul(
         BigNumber.from(parseInt(inputValue))
@@ -83,33 +85,18 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
 
   const inputRef = useRef();
 
+  let label = `Will submit: ${value.toString()}`;
   let inputElementType = "number";
-  let leftElementChild = "#";
   if (format === OPTS.number) {
-    leftElementChild = "#";
     inputElementType = "number";
   } else if (format === OPTS.eth) {
-    leftElementChild = EtherSymbol;
     inputElementType = "number";
   } else if (format === OPTS.gwei) {
-    leftElementChild = <Icon as={RiGasStationLine} />;
+    inputElementType = "number";
+  } else if (format === OPTS.mwei) {
     inputElementType = "number";
   } else if (format === OPTS.usdc) {
-    leftElementChild = "$";
     inputElementType = "number";
-  } else if (format === OPTS.date) {
-    leftElementChild = null;
-    inputElementType = "date";
-  } else if (format === OPTS["datetime-local"]) {
-    leftElementChild = null;
-    inputElementType = "datetime-local";
-  } else if (format === OPTS["datetime-utc"]) {
-    leftElementChild = null;
-    inputElementType = "datetime-local";
-  }
-
-  let label = `Will submit: ${value.toString()}`;
-  if (format === OPTS.usdc) {
     label = (
       <Text>
         Will submit: {value.toString()}. Calculated by converting the inputted
@@ -117,6 +104,12 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
         converting 1 ETH to 10<sup>18</sup> Wei.
       </Text>
     );
+  } else if (format === OPTS.date) {
+    inputElementType = "date";
+  } else if (format === OPTS["datetime-local"]) {
+    inputElementType = "datetime-local";
+  } else if (format === OPTS["datetime-utc"]) {
+    inputElementType = "datetime-local";
   }
 
   return (
@@ -124,10 +117,10 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
       <Tooltip label={label} hasArrow>
         <HStack>
           <InputGroup>
-            {leftElementChild && (
+            {OPT_ICONS[format] && (
               <InputLeftElement
                 color={"gray.400"}
-                children={leftElementChild}
+                children={OPT_ICONS[format]}
               />
             )}
             <Input
@@ -148,7 +141,7 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
               >
                 {Object.entries(OPTS).map(([k, v]) => (
                   <MenuItemOption key={v} value={k}>
-                    {v}
+                    {OPTS_DISPLAY_VALUES[k]}
                   </MenuItemOption>
                 ))}
               </MenuOptionGroup>

@@ -11,7 +11,7 @@ const ethPriceUrl = `https://api.etherscan.io/api?module=stats&action=ethprice&a
 
 
 export default function useEthPriceInUsd() {
-  const [usdPrice, updateUsdPrice] = useState(0);
+  const [usdPrice, updateUsdPrice] = useState(1200);
 
   useEffect(() => {
     const getEthPrice = async () => {
