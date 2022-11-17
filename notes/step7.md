@@ -7,6 +7,7 @@
 - show units when parsing ✅
 - seperate mwei, usdc & decimals to USD ✅
 - refactor numberDisplay & numberInput ✅
+- long function names in usdc contract ✅
 
 ## features
  - ga ✅
@@ -22,10 +23,12 @@
 ## bug
 - Temp fix - stop this checking ✅
 - app breaks when there is a struct with bytes32 & bytes ✅
+- events shows empty box when doing setName ✅
 
 ------------------------------------------------
 
 ## ui
+
 
 ## features
 - think/research/prototype on providing a pre-setup link for a forking
@@ -46,7 +49,7 @@
 - how can we deploy from remix to our chain
 
 ## bugs
- - events shows empty box when doing setName
+
 ## website
  - getting started videos
    - truffle

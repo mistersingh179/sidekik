@@ -359,9 +359,8 @@ const TransactionReceipt = ({ receipt, eventsAbi }) => {
 };
 
 const TransactionError = ({ error }) => {
-
   const extractedErrorObj = extractMessageFromError(error);
-  console.log("final extractedErrorObj is: ", extractedErrorObj)
+  console.log("final extractedErrorObj is: ", extractedErrorObj);
 
   return (
     <VStack
@@ -590,13 +589,17 @@ const FunctionExecButton = ({
 }) => {
   return (
     <ButtonGroup isAttached colorScheme={isView ? "blue" : "orange"}>
-      <Button onClick={runFunc}>{abi.name}</Button>
+      <Button onClick={runFunc}>
+        <Text m={0} p={0} maxW={"200px"} overflow={"hidden"}>
+          {abi.name}
+        </Text>
+      </Button>
       <Show above={"md"}>
         <Menu>
           <MenuButton as={IconButton} icon={<ChevronDownIcon />} />
           <MenuList zIndex={"dropdown"}>
             <MenuItem icon={<ArrowRightIcon />} onClick={runFunc}>
-              Execute Function
+              Execute {abi.name}
             </MenuItem>
             {!showRaw && (
               <MenuItem icon={<ViewIcon />} onClick={toggleShowingRaw}>
