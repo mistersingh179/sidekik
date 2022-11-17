@@ -64,7 +64,7 @@ export default function NumberDisplay({ value }) {
     formattedValue = Number(formatUnits(value || 0, 6)).toFixed(4);
   } else if (displayOption === OPTS.usdc) {
     formattedValue = Number(
-      parseFloat(formatEther(value)) * ethPriceInUsd
+      parseFloat(formatEther(value || 0)) * ethPriceInUsd
     ).toFixed(4);
   } else if (displayOption === OPTS["datetime-utc"]) {
     formattedValue = moment.unix(value).utc().format();

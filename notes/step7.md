@@ -29,6 +29,18 @@
 
 ## features
 - think/research/prototype on providing a pre-setup link for a forking
+  - one machine with 100's of hardhat commands running
+  - each service is at a different port / subdomain
+  - all services stores in a hash
+  - UI page which says "Create Private Testnet by using Hardhat & forking mainnet"
+  - /getHardhatEndPoint -> gives one service URL back
+  - now you can use that endpoint inside hardhat and explore any contract
+  - you can also deploy to it & then explore your own contracts
+  - you can do impersonate, setBal, checkpoint, restore & reset.
+  - FE makes call to /keepHardhatEndPointAlive?id=xyz
+  - If x time has passed & no keep alive requests, then we reset node & make it available for others 
+  - If hardhat chain has received no requests for some time, we can find out by logs maybe, then we can reset node & take it away.
+    
 - should we change chain to fetch from be same as your own chain
 - how can we deploy from remix to our chain
 
