@@ -394,6 +394,7 @@ const TransactionError = ({ error }) => {
 };
 
 const Events = ({ events, eventsAbi }) => {
+  events = events.filter((eventObj) => !!eventObj.args && !!eventObj.event);
   console.log("building events with: ", events, eventsAbi);
   if (!events || events.length == 0) {
     return "";
@@ -438,6 +439,7 @@ const Outputs = ({ outputsAbi, result }) => {
       border={"1px"}
       borderColor={"gray.200"}
       p={2}
+      w={"full"}
     >
       <Heading size={"sm"}>{pluralize("Output", outputsAbi.length)}</Heading>
       {outputsAbi.map((outputAbi, idx) => {

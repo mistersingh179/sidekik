@@ -212,3 +212,8 @@ wallet
   - should requests to check in parallel for every contract
   - handle any failed requests
   - should not change state when values have not changing
+- show the events which come from calling a function, but belong to another contract which was called
+  - e.g. we call setName -> usdc.transfer
+  - we need to get the event ABI from the contract which was called
+  - and there is no event name & args on `receipt.event`, so we need to figure those out from `logs` etc.
+  

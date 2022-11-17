@@ -40,12 +40,13 @@
   - FE makes call to /keepHardhatEndPointAlive?id=xyz
   - If x time has passed & no keep alive requests, then we reset node & make it available for others 
   - If hardhat chain has received no requests for some time, we can find out by logs maybe, then we can reset node & take it away.
-    
+  - x minutes of no transactions and we reset it
+  - when we reset, can we set new subdomain for it, so if you hit old one, it tells you not here.
 - should we change chain to fetch from be same as your own chain
 - how can we deploy from remix to our chain
 
 ## bugs
- 
+ - events shows empty box when doing setName
 ## website
  - getting started videos
    - truffle
