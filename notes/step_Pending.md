@@ -198,6 +198,11 @@ wallet
 - can we show natspec inline
 - get code from transaction
 - think, how can we tie this transaction to an outside event and fire it
+- build UI to visualize and query contracts storage.
+  - add 
+  - save
+  - query entire map & show all data
+
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

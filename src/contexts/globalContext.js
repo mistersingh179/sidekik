@@ -206,7 +206,7 @@ export const GlobalProvider = (props) => {
           !name.endsWith(".dbg.json") &&
           !ignoredFileNames.some((n) => n == name)
         ) {
-          console.log("** we have file: ", item);
+          console.debug("** we have file: ", item);
           await readFileContent(item);
         } else {
           console.debug("skipping file: ", item.name);
@@ -248,6 +248,32 @@ export const GlobalProvider = (props) => {
       const abi = fileJsonObj["abi"];
       if (_.isArray(abi) && _.isString(name)) {
         addContractAbi(name, abi);
+      }
+    }
+
+    // for files with networks like truffle's artifact
+    // to accommodate ganache gui when chain is 1337 & port is 7545 then also read from 1234 chain.
+    // to accommodate truffle develop when chain is 1337 & port is 9545 then also read from 5777 chain.
+    if (
+      _.isString(fileJsonObj.contractName) &&
+      _.isObject(fileJsonObj.networks)
+    ) {
+      let name = fileJsonObj.contractName;
+      let address;
+      if (fileJsonObj.networks[chainId]?.address) {
+        address = fileJsonObj.networks[chainId].address;
+      } else if (chainId === 1337) {
+        const connectionUrl = chainProvider.connection.url;
+        if (connectionUrl.indexOf("127.0.0.1:9545") >= 0) {
+          address = fileJsonObj.networks[5777]?.address; // truffle develop
+        } else if (connectionUrl.indexOf("127.0.0.1:7545") >= 0) {
+          address = fileJsonObj.networks[1234]?.address; // ganache gui
+        }
+      }
+      if (isAddress(address) && _.isString(name)) {
+        addContractAddress(name, address);
+        const found = await doesContractCodeExist(chainProvider, address);
+        markContractFound(name, found);
       }
     }
 
@@ -379,7 +405,7 @@ export const GlobalProvider = (props) => {
         "!!!injectedProvider is not there & rpc is not valid. will setup polling for RPC"
       );
       intervalHandler = setInterval(() => {
-        console.log("!!!in interval function. processing RPC url again");
+        console.debug("!!!in interval function. processing RPC url again");
         processRpcUrl();
       }, [1000]);
     } else {

@@ -10,7 +10,7 @@ export default function useRpcUrlProcessor() {
     name: null,
   });
   const processRpcUrl = useCallback(async () => {
-    console.log("checking on urlToProcess: ", rpcUrl == null);
+    console.debug("checking on urlToProcess: ", rpcUrl == null);
     try {
       const localProvider = new ethers.providers.JsonRpcProvider(rpcUrl ? rpcUrl : true);
       const network = await localProvider.getNetwork();
@@ -18,7 +18,7 @@ export default function useRpcUrlProcessor() {
       updateLocalNetwork(network);
       updateIsRpcValid(true);
     } catch (e) {
-      console.log("got error while connecting to rpc: ", e);
+      console.debug("got error while connecting to rpc: ", e);
       updateLocalProvider(null);
       updateLocalNetwork({ chainId: null, name: null });
       updateIsRpcValid(false);

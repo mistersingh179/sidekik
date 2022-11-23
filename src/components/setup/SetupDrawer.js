@@ -139,7 +139,7 @@ export const RpcUrlInputBox = () => {
 const MetaMaskConnectBox = () => {
   const { handleClickConnectWallet } = useContext(GlobalContext);
   const buttonText = useBreakpointValue({
-    base: "or Connect",
+    base: "or MetaMask",
     xl: "or Connect Via MetaMask",
   });
   return (
