@@ -23,7 +23,7 @@ import md5 from "md5";
 import { useIsHardhat } from "../hooks/useIsHardhat";
 
 const {
-  utils: { isAddress, formatEther, formatUnits, parseUnits },
+  utils: { isAddress, formatEther, formatUnits, parseUnits, isHexString },
   constants: { AddressZero },
 } = ethers;
 
@@ -228,18 +228,38 @@ export const GlobalProvider = (props) => {
     const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
     const fileStringObj = JSON.stringify(fileJsonObj);
     const fileMd5 = md5(fileStringObj);
+    const fileName = fileHandle.name?.split(".")?.[0];
 
     if (filesChecksum[fileHandle.name] == fileMd5) {
-      console.debug(
-        "skipping: ",
-        fileHandle.name,
-        " as md5 is same: ",
-        fileMd5
-      );
+      console.debug("skipping: ", fileHandle.name, " as md5 is same ", fileMd5);
       return;
     } else {
-      console.debug("saving file md5 for next use");
+      console.debug("saving: ", fileHandle.name, " md5 for later ", fileMd5);
       setFileChecksum(fileHandle.name, fileMd5);
+    }
+
+    // for foundry deployed file
+    if (
+      isAddress(fileJsonObj.deployer) &&
+      isAddress(fileJsonObj.deployedTo) &&
+      isHexString(fileJsonObj.transactionHash)
+    ) {
+      const address = fileJsonObj.deployedTo;
+      const name = fileName;
+      addContractAddress(name, address);
+      const found = await doesContractCodeExist(chainProvider, address);
+      markContractFound(name, found);
+    }
+
+    // for foundry out file which has ABI
+    if (
+      _.isObject(fileJsonObj.abi) &&
+      _.isObject(fileJsonObj.ast) &&
+      _.isObject(fileJsonObj.metadata)
+    ) {
+      const abi = fileJsonObj.abi;
+      const name = fileName;
+      addContractAbi(name, abi);
     }
 
     // for Artifact Files

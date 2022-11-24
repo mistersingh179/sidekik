@@ -202,7 +202,15 @@ wallet
   - add 
   - save
   - query entire map & show all data
-
+- print/cia file/video summary of what you did. (cia stands for contract interaction file)
+  - this is customizable
+  - it shows the transactions with inputs & outputs
+- create the concept of cia file, like json.
+  - it has name of functions, inputs & outputs
+  - it has order
+  - it has feeding
+- allow setting gas base price etc. which is useful when working with production contracts
+- research what flashbots nice to have features can be built
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.
@@ -221,4 +229,7 @@ wallet
   - e.g. we call setName -> usdc.transfer
   - we need to get the event ABI from the contract which was called
   - and there is no event name & args on `receipt.event`, so we need to figure those out from `logs` etc.
-  
+
+# growth
+- setup goerli validator, get goerli eth & setup faucet to get eyeballs
+- 
