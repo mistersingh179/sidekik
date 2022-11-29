@@ -55,7 +55,7 @@ export default function Bytes32Input({ value, setInput, placeholder }) {
     let inputValue = inputRef.current.value;
     updateIsValid(true);
     if (!inputValue) {
-      setInput("");
+      setInput("0x0000000000000000000000000000000000000000000000000000000000000000");
     } else if (format === OPTS.bytes32) {
       setInput(inputValue);
     } else if (format === OPTS.string) {

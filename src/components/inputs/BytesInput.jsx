@@ -53,7 +53,6 @@ function toHex(str) {
 
 export default function BytesInput({ inputAbi, value, setInput, placeholder }) {
   const [format, updateFormat] = useState(OPTS.bytes);
-
   if (!value) {
     value = '';
   }
@@ -61,7 +60,7 @@ export default function BytesInput({ inputAbi, value, setInput, placeholder }) {
   const handleInputChange = () => {
     let inputValue = inputRef.current.value;
     if (!inputValue) {
-      setInput("");
+      setInput("0x");
     } else if (format === OPTS.bytes) {
       setInput(inputValue);
     } else if (format === OPTS.string) {

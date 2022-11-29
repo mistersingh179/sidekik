@@ -86,6 +86,7 @@ import pluralize from "pluralize";
 import hash from "object-hash";
 import groupSimilarFunctionNames from "group-similar-functions";
 import extractMessageFromError from "../../helpers/extractMessgeFromError";
+import BooleanInput from "../inputs/BooleanInput";
 
 const {
   utils: { formatEther },
@@ -202,6 +203,8 @@ const InputElement = ({ inputAbi, value, setInput }) => {
     Elem = Bytes32Input;
   } else if (inputAbi.type.startsWith("bytes")) {
     Elem = BytesInput;
+  } else if (inputAbi.type.startsWith("bool")) {
+    Elem = BooleanInput;
   } else {
     Elem = BasicInput;
   }
@@ -239,8 +242,14 @@ const InputTupleContainer = ({ inputAbi, value, setInput }) => {
   return (
     <VStack w={"full"} border="1px" borderColor="gray.200" p={2}>
       {inputAbi.components.map((item, idx) => {
+        let Elem;
+        if (item.type.endsWith("[]")) {
+          Elem = InputArrayContainer;
+        } else {
+          Elem = InputElement;
+        }
         return (
-          <InputElement
+          <Elem
             key={idx}
             inputAbi={item}
             value={state[item.name]}
@@ -851,6 +860,8 @@ export default function FunctionsTable({ contractName }) {
     () => new ethers.Contract(address, abiArray, wallet),
     [address, abiArray, wallet]
   );
+  window.contractWriteObj = contractWriteObj;
+  window.contractReadObj = contractReadObj;
 
   useEffect(() => {
     console.log("got new functions: ", functions);

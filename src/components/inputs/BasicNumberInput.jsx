@@ -56,7 +56,7 @@ export default function BasicNumberInput({ value, setInput, placeholder }) {
     // let inputValue = inputRef.current.value || "0";
     let inputValue = inputRef.current.value;
     if (!inputValue) {
-      setInput("");
+      setInput(BigNumber.from(0));
     } else if (format === OPTS.number) {
       inputValue = inputValue.replace(/\.(.*)$/gm, "");
       setInput(BigNumber.from(inputValue));

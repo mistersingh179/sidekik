@@ -211,6 +211,22 @@ wallet
   - it has feeding
 - allow setting gas base price etc. which is useful when working with production contracts
 - research what flashbots nice to have features can be built
+- allow user to specify which chain to read contracts for
+  - so when inputting a file, they want to read contracts deployed to to chain 1234(ganache gui chain) but their ganache ui is behing the scenes using ganache which is at 1337
+- needs to be a way to refresh found icon on contracts
+  - maybe read again should do it
+  - or tapping on the icon should make it look again
+  - currently having to refresh app
+- where showing input, show the actual code
+  - this is just wrapping the obj with a call to the function
+  - make this an option so later we can make it an item in settings 
+  - *bonus* allow user to change the input in the code too.
+- growl plugin to show compile error from anvil, truffle & hardhat
+  - I can tee the value to the growl app. then still print to screen 
+  - app can parse and do growl if compiling failed
+  - another way is to write output to file
+  - then app runs, prints file content back to screen
+  - it also parses input and growl as necessary
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.
@@ -229,7 +245,12 @@ wallet
   - e.g. we call setName -> usdc.transfer
   - we need to get the event ABI from the contract which was called
   - and there is no event name & args on `receipt.event`, so we need to figure those out from `logs` etc.
-
+- populate the input fields & function selection from a previous transaction
+  - be able to repeat a previous tx faster
+  - select previous tx as template, modify and repeat
+  - name that tx something, so it can be repeated
 # growth
 - setup goerli validator, get goerli eth & setup faucet to get eyeballs
-- 
+
+# reported bugs
+- Formatting isn't great on smaller desktop devices which makes it difficult for me to be able to interact with your application

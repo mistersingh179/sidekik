@@ -54,7 +54,7 @@ export default function AddressDropdown({
         label: "Chain Wallet Addresses",
         options: chainAddresses.map((addr, idx) => ({
           value: addr,
-          label: `${buildDisplayAddress(addr)} – Wallet ${idx}`
+          label: `${buildDisplayAddress(addr)} – Wallet ${idx}`,
         })),
       },
       {
