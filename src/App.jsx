@@ -21,6 +21,7 @@ import BalanceTransfer from "./components/BalanceTransfer";
 import { ExternalPriceProvider } from "./contexts/externalPriceContext";
 import HardhatFunctions from "./components/setup/HardhatFunctions";
 import SetupContractManually from "./components/setup/SetupContractManually";
+import { ReusableThingsProvider } from "./contexts/reusableThingsContext";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +30,10 @@ const router = createBrowserRouter(
       <Route path={"contracts"} element={<ContractTabs />} />
       <Route path={"exp"} element={<StateIsOutside />} />
       <Route path={"hardhat-functions"} element={<HardhatFunctions />} />
-      <Route path={"setup-contract-manually"} element={<SetupContractManually />} />
+      <Route
+        path={"setup-contract-manually"}
+        element={<SetupContractManually />}
+      />
       <Route index element={<SetupFiles />} />
     </Route>
   )
@@ -42,7 +46,9 @@ function App() {
       <GlobalProvider>
         <ExternalPriceProvider>
           <BalancesProvider>
-            <RouterProvider router={router} />
+            <ReusableThingsProvider>
+              <RouterProvider router={router} />
+            </ReusableThingsProvider>
           </BalancesProvider>
         </ExternalPriceProvider>
       </GlobalProvider>

@@ -227,6 +227,11 @@ wallet
   - another way is to write output to file
   - then app runs, prints file content back to screen
   - it also parses input and growl as necessary
+- keyboard shortcuts to run anything 
+  - hold down control and it shows shortcut keys everwhere, like control + 1 for first function
+  - run the shortcut to run that function
+  - up down arrows to go between functions
+  - left right arrows to go between columns
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

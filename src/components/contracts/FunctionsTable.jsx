@@ -87,6 +87,7 @@ import hash from "object-hash";
 import groupSimilarFunctionNames from "group-similar-functions";
 import extractMessageFromError from "../../helpers/extractMessgeFromError";
 import BooleanInput from "../inputs/BooleanInput";
+import StringInput from "../inputs/StringInput";
 
 const {
   utils: { formatEther },
@@ -205,6 +206,8 @@ const InputElement = ({ inputAbi, value, setInput }) => {
     Elem = BytesInput;
   } else if (inputAbi.type.startsWith("bool")) {
     Elem = BooleanInput;
+  } else if (inputAbi.type.startsWith("string")) {
+    Elem = StringInput;
   } else {
     Elem = BasicInput;
   }
@@ -599,7 +602,7 @@ const FunctionExecButton = ({
   return (
     <ButtonGroup isAttached colorScheme={isView ? "blue" : "orange"}>
       <Button onClick={runFunc}>
-        <Text m={0} p={0} maxW={"200px"} overflow={"hidden"}>
+        <Text m={0} p={0} maxW={{base: "100px", md: "200px"}} overflow={"hidden"}>
           {abi.name}
         </Text>
       </Button>
@@ -879,13 +882,17 @@ export default function FunctionsTable({ contractName }) {
           variant="simple"
           border={"1px"}
           borderColor={"gray.200"}
+          // sx={{tableLayout: 'fixed'}}
         >
           {/*<TableCaption>Functions read from contract's ABI</TableCaption>*/}
           <Thead>
             <Tr>
-              <Th>Inputs</Th>
-              <Th>Function</Th>
-              <Th>Outputs</Th>
+              <Th w={'50%'}>Inputs</Th>
+              {/*<Th>Inputs</Th>*/}
+              {/*<Th w={{base: 'auto', xl: '300px'}}>Function</Th>*/}
+              <Th w={'auto'}>Function</Th>
+              <Th w={'50%'}>Outputs</Th>
+              {/*<Th>Outputs</Th>*/}
             </Tr>
           </Thead>
           <Tbody>

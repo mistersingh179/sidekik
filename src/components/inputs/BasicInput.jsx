@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export default function ({ value, setInput, placeholder }) {
   useEffect(() => {
-    if (value === undefined) {
+    if (!value) {
       setInput("");
     }
   }, []);

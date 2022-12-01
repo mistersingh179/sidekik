@@ -13,6 +13,19 @@
     - it has deployedTo in the key ✅
 - transfer & transferFrom, should be together
 - convert boolean to dropdown with false selected
+- faster way to enter data
+  - save string outputs
+  - make string inputs a dropdown
+  - save number outputs
+  - make number inputs a dropdown
+  - save number & string outputs & inputs
+  - make number & string input a dropdown
+  - have this dropdown use saved data
+  - sizing broke
+  - store values based on what function type it is
+  - refactor addresses to also use same pattern as strings & numbers
+  - make dropdown or input box a setting item
+    - allow user to pick their settings
 
 ## performance improvements
 - read files in a worker thread
@@ -38,6 +51,7 @@
 - make video of hot reloading for truffle
 
 ## ui
+- add message when browser is not supported
 - when launching tell them boldly that no network has been found.
 - inform the user what we read, this way they can fix or triage why their contracts are not being read or why the wrong contracts are being read.
 - make address box editable on setup Files screen
@@ -49,6 +63,7 @@
 - move $ in decimals to the bottom
 - dont show chrome auto suggest on name
 - can not move forward by hitting continue till we also have ABI
+- ignore recording of ga & clarity in dev
 
 ## bug
 - when no network, it is reading every 1 second, and flashing th e input contracts
@@ -56,7 +71,7 @@
 - slow with whole directory loaded in
 - ignore blank `[]` abi's when parsing. shows lots empty items when parsing complete directories
 
-## bugs from slivertongue
+## bugs from silvertongue
 - bytes can be set with empty value & internally uses 0x ✅
 - bytes32 can be set with empty value & internally uses 0x00..00 ✅
 - if a struct has an array show array ✅
@@ -73,7 +88,17 @@
 - When I try to pass in an empty array: [] as a bytes[] arguments, it returns an error for some reason ✅
 - That happens when I try to pass in the empty array as part of a struct, like Transaction for instance ✅
 
-Extra feature:
+## bugs from chillipaneer
+> nice. sidekik looks like it will be awesome.
+I stuck with remix for something recently just because it made it easy to interact with the contracts on testnet.
+but it looks like the app is still being built.
+I can't upload a file or sync to a directory     errror:Uncaught (in promise) TypeError: window.showOpenFilePicker is not a function
+polling of local server appears to still be happening even when connected with metamask
+and none of the contact links connect to anything
+let me know if I can help out with testing. It looks like a killer tool
+
+
+## Extra feature request from silvertongue:
 
 - I end up copy pasting a lot of the same variables when I am testing, so it would be great to have a way to 1. have variables ready in the drop down for certain parameters or 2. have them directly rendered into the input field so I don't have to go for a copy / paste of 10 arguments every time it reloads
   LMK if all that is clear.
@@ -82,3 +107,6 @@ Extra feature:
 - update for truffle ✅
 - add path & fs to document for saveContractFile in hardhat ✅
 - also make sure name is correct for saveContractFile in hardhat ✅
+
+## refactor
+- put error boundary around each row
