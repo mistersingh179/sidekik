@@ -29,6 +29,7 @@ Navigation
 - contract interaction
 - transaction history, these are all previous interactions we have had 
   - clicking on old transaction, brings that contract/function in view & populates it & indicates that they need to execute it. it also removes old response.
+  - be able to type in any transaction hash and shows its data, with ability to trace, inspec etc.
 - it also has transaction hash so that can be searched on.
 - events - these are all events we listen for, and they show up
 
@@ -232,6 +233,8 @@ wallet
   - run the shortcut to run that function
   - up down arrows to go between functions
   - left right arrows to go between columns
+- add ability to stop impersonating
+  - this is important, coz if we impersonate a contract, then we can't call functions of that contract till we stop impersonating it 
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

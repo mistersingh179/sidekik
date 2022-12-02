@@ -1,31 +1,16 @@
-# step 8 mission: make on boarding of users easier.
+# step 8 mission: make onboarding of users easier.
 
 ## features
 - support truffle ✅
   - parse the address from json file ✅
   - extract correct network name(develop) and id(5777) from chain ✅
-  - support forking & impersonating 
 - support foundry ✅
   - accept its abi file in the out directory ✅
     - it has no contractName, so need substitue.  ✅
     - the abi itself is good. ✅
   - accept its contract address file ✅
     - it has deployedTo in the key ✅
-- transfer & transferFrom, should be together
-- convert boolean to dropdown with false selected
-- faster way to enter data
-  - save string outputs
-  - make string inputs a dropdown
-  - save number outputs
-  - make number inputs a dropdown
-  - save number & string outputs & inputs
-  - make number & string input a dropdown
-  - have this dropdown use saved data
-  - sizing broke
-  - store values based on what function type it is
-  - refactor addresses to also use same pattern as strings & numbers
-  - make dropdown or input box a setting item
-    - allow user to pick their settings
+  - support impersonating ✅
 
 ## performance improvements
 - read files in a worker thread
@@ -70,6 +55,14 @@
 - pending tx via metamask did not show spinner while tx was being mined
 - slow with whole directory loaded in
 - ignore blank `[]` abi's when parsing. shows lots empty items when parsing complete directories
+- two files with same name cause clash of keys
+- when names are same it keeps reading over & over
+- unable to use on brave
+- show message asking to use chrome ✅
+  - when shield is on, it wont talk to localhost
+  - showOpenFilePicker does not work
+  - showDirectoryPicker does not work
+  - disable buttons which won't work
 
 ## bugs from silvertongue
 - bytes can be set with empty value & internally uses 0x ✅
@@ -97,6 +90,10 @@ polling of local server appears to still be happening even when connected with m
 and none of the contact links connect to anything
 let me know if I can help out with testing. It looks like a killer tool
 
+## more bugs from chillipaneer
+> yeah. those buttons are working with chrome, but not with Brave, even with shields down.
+They're both constantly polling localhost:8545 even when metamask connected and RPC URL option is disabled
+have pinged you on twitter
 
 ## Extra feature request from silvertongue:
 

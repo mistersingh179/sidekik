@@ -85,7 +85,7 @@ export default function useContractFileData() {
   window.c = contracts;
 
   const addContractAddress = async (name, address) => {
-    console.log("in addContract Address");
+    console.debug("in addContract Address");
     dispatch({
       type: TYPES.ADD_CONTRACT_ADDRESS,
       address: address,
