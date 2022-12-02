@@ -15,7 +15,7 @@ import {
 import { useEffect } from "react";
 import GrittedTeeth from "../../images/gritted_teeth.gif";
 
-const hasFileFeatures = () => {
+export const hasFileFeatures = () => {
   return !!(window.showDirectoryPicker && window.showOpenFilePicker);
 };
 

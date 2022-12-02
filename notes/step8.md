@@ -60,9 +60,9 @@
 - unable to use on brave
 - show message asking to use chrome ✅
   - when shield is on, it wont talk to localhost
-  - showOpenFilePicker does not work
-  - showDirectoryPicker does not work
-  - disable buttons which won't work
+  - showOpenFilePicker does not work ✅
+  - showDirectoryPicker does not work ✅
+  - disable buttons which won't work ✅
 
 ## bugs from silvertongue
 - bytes can be set with empty value & internally uses 0x ✅

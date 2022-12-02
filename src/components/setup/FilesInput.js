@@ -7,6 +7,7 @@ import {
   TagCloseButton,
   TagLabel,
   Text,
+  Tooltip,
   useToast,
   VStack,
   Wrap,
@@ -23,6 +24,7 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import pluralize from "pluralize";
 import useFileReloadToast from "../../hooks/useFileReloadToast";
 import SetupContractManually from "./SetupContractManually";
+import { hasFileFeatures } from "./BrowserIssue";
 
 export default function FilesInput(props) {
   const {
@@ -41,6 +43,12 @@ export default function FilesInput(props) {
   const { reloadToast } = useFileReloadToast();
 
   const contractNames = useMemo(() => Object.keys(contracts), [contracts]);
+
+  const canAccessFiles = hasFileFeatures();
+  const canNotAccessFiles = !canAccessFiles;
+  const label =
+    canNotAccessFiles &&
+    "Sorry, but this feature is currently only available in Google Chrome v86+";
 
   const setupDirAccess = async (pathId, evt) => {
     console.log(pathId, evt);
@@ -85,14 +93,23 @@ export default function FilesInput(props) {
   return (
     <VStack spacing={5} w={"500px"}>
       <Text>Provide Contract ABI's & their Addresses</Text>
-      <Wrap spacing={2} flexWrap={"wrap"} justify={'center'}>
+      <Wrap spacing={2} flexWrap={"wrap"} justify={"center"}>
         <WrapItem>
-          <Button onClick={setupDirAccess.bind(this, "dirPath")}>
-            Sync Directory
-          </Button>
+          <Tooltip hasArrow label={label} bg={"red.600"} shouldWrapChildren>
+            <Button
+              onClick={setupDirAccess.bind(this, "dirPath")}
+              isDisabled={canNotAccessFiles}
+            >
+              Sync Directory
+            </Button>
+          </Tooltip>
         </WrapItem>
         <WrapItem>
-          <Button onClick={setupFileAccess}>Upload File(s)</Button>
+          <Tooltip hasArrow label={label} bg={"red.600"} shouldWrapChildren>
+            <Button onClick={setupFileAccess} isDisabled={canNotAccessFiles}>
+              Upload File(s)
+            </Button>
+          </Tooltip>
         </WrapItem>
         <WrapItem>
           <SetupContractManually />
@@ -151,7 +168,7 @@ export default function FilesInput(props) {
         </Button>
         <ReactRouterLink to={"/contracts"}>
           <Button
-            colorScheme={'teal'}
+            colorScheme={"teal"}
             rightIcon={<ArrowForwardIcon />}
             isDisabled={contractNames.length == 0}
           >
