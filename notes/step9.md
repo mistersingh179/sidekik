@@ -1,6 +1,6 @@
 # step 9: make it do more
 
-## feaures
+## features
 - transfer & transferFrom, should be together
 - convert boolean to dropdown with false selected
   - this will prevent errors
@@ -10,3 +10,7 @@
   - refactor address to use same pattern
   - build modal to select values from cache
   - make dropdowns driven from settings
+- do signatures
+  - many times when it wants bytes from signing something
+  - able to type something in, have it signed & then be put in
+- 
