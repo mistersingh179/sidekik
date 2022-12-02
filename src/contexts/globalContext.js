@@ -141,7 +141,10 @@ export const GlobalProvider = (props) => {
   const fileHandles = handles.filter((handle) => handle.kind === "file");
 
   const [filePollingInterval, updateFilePollingInterval] = useState(1000);
-  useInterval(() => readAgain(), filePollingInterval);
+  useInterval(
+    () => readAgain(),
+    handles.length > 0 ? filePollingInterval : null
+  );
 
   const [readyToReadAgain, setReadyToReadAgain] = useState(false);
 

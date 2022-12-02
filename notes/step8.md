@@ -63,6 +63,8 @@
   - showOpenFilePicker does not work ✅
   - showDirectoryPicker does not work ✅
   - disable buttons which won't work ✅
+- keeps pinging localhost, when using metamask
+- not fetching abi when connected to metamask
 
 ## bugs from silvertongue
 - bytes can be set with empty value & internally uses 0x ✅
@@ -80,6 +82,11 @@
   - it should not error out as it is submitting their appropriate empty value ✅
 - When I try to pass in an empty array: [] as a bytes[] arguments, it returns an error for some reason ✅
 - That happens when I try to pass in the empty array as part of a struct, like Transaction for instance ✅
+
+## more from silvertongue
+- how to fake things such as block.timestamp
+- @MisterSingh - other future feature request -> can you give me ability to organize my functiosn in the order that I want too? and for that order to be saved - would be nice to prevent me from scrolling up and down unnecessarily while I'm testing
+- >and another additional - most likely more important feature - the ability to create a "FLOW" => I can order transactions in a specific order with their placeholder / pre-determined inputs and trigger them, so that I don't have to click through A -> B -> C to see the result of C every time - unsure if that is clear?
 
 ## bugs from chillipaneer
 > nice. sidekik looks like it will be awesome.
@@ -107,3 +114,7 @@ have pinged you on twitter
 
 ## refactor
 - put error boundary around each row
+
+## research
+- can disappearing abi tell us, that there is a compile error.
+  - in foundry file becomes empty when there is compilation error.
