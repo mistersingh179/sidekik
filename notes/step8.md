@@ -19,11 +19,8 @@
   - so if time is less than 5 seconds, bump it to 5 seconds
 
 ## content
-- build content showing that it works with truffle
-  - video showing how i use sidekik & truffle
-  - update docs with video
 - rearrange content to fit in truffle ✅
-- update foundry & hardhat-boilerplate instructions with chokidar
+- update foundry instructions with chokidar ✅
 - do something with flashbots
 - do something with chainlink
 - do something with zkSync
@@ -32,8 +29,7 @@
 - build docs with gitbook ✅
 - investigate ethbuilders.nyc
 - setup meetup
-- make video of hot reloading for foundry
-- make video of hot reloading for truffle
+- make video of hot reloading for foundry ✅
 
 ## ui
 - add message when browser is not supported
@@ -51,20 +47,24 @@
 - ignore recording of ga & clarity in dev
 
 ## bug
-- when no network, it is reading every 1 second, and flashing th e input contracts
+- two files with same name cause clash of keys
+- can add two files with same name, this causes loop reading
+- why so many getBalance calls, when syncing a directory?
+- when names are same it keeps reading over & over ✅
+  - makes multiple calls to chain for balance & code ✅
+  - store path of file. ✅
+- every transaction leads to a bunch of getBalance calls
+- when no network, it is reading every 1 second, and flashing the input contracts
 - pending tx via metamask did not show spinner while tx was being mined
 - slow with whole directory loaded in
 - ignore blank `[]` abi's when parsing. shows lots empty items when parsing complete directories
-- two files with same name cause clash of keys
-- when names are same it keeps reading over & over
-- unable to use on brave
+- unable to use on brave ✅
 - show message asking to use chrome ✅
-  - when shield is on, it wont talk to localhost
   - showOpenFilePicker does not work ✅
   - showDirectoryPicker does not work ✅
   - disable buttons which won't work ✅
-- keeps pinging localhost, when using metamask
 - not fetching abi when connected to metamask
+- address field should either be editable or not be there
 
 ## bugs from silvertongue
 - bytes can be set with empty value & internally uses 0x ✅
@@ -96,6 +96,25 @@ I can't upload a file or sync to a directory     errror:Uncaught (in promise) Ty
 polling of local server appears to still be happening even when connected with metamask
 and none of the contact links connect to anything
 let me know if I can help out with testing. It looks like a killer tool
+
+## bugs from chillipaneer on live session
+- auto remove space from pasted in contract address
+- no paste in address dropdown
+- address dropdown blur, removes the value
+- the reason I use remix, because I get these functions UI. now i can switch to hardhat.
+- overloaded functions dont work!!!
+
+
+## feedback form austin
+> put last used function on top
+> preserve values
+> show contract address on top
+> re-run a tx
+> 
+
+## more feedback from slivertongue
+> when i switch out between contracts the inputs of the contract im switching out of disappear, would be great to keep them
+> would be great to split the screen so i dont have to tab in and out
 
 ## more bugs from chillipaneer
 > yeah. those buttons are working with chrome, but not with Brave, even with shields down.

@@ -70,7 +70,7 @@ const keys = {
 };
 
 /*
-bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1))
+bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
 a = ethers.utils.solidityKeccak256(['string'], ['eip1967.proxy.implementation'])
 b = ethers.BigNumber.from(a).sub(1)
 c = ethers.utils.hexlify(b)

@@ -4,7 +4,7 @@ import { useReducer, useState } from "react";
 
 export default function useResourceHandles() {
   const [handles, updateHandles] = useState([]);
-
+  window.handles = handles;
   const addHandle = (handle) => {
     updateHandles((prevState) => [...prevState, handle]);
   };

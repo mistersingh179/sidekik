@@ -51,11 +51,11 @@ export default function FilesInput(props) {
     "Sorry, but this feature is currently only available in Google Chrome v86+";
 
   const setupDirAccess = async (pathId, evt) => {
-    console.log(pathId, evt);
+    console.debug(pathId, evt);
     let directoryHandle;
     try {
       directoryHandle = await window.showDirectoryPicker({ id: pathId });
-      await readDirContent(directoryHandle);
+      await readDirContent(directoryHandle, [directoryHandle.name]);
       addHandle(directoryHandle);
     } catch (e) {
       console.log("got error: ", e);
@@ -75,8 +75,9 @@ export default function FilesInput(props) {
       multiple: true,
       excludeAcceptAllOption: true,
     });
+    // todo - this allows adding a file with same name of a file we already have
     for (const fileHandle of handles) {
-      await readFileContent(fileHandle);
+      await readFileContent(fileHandle, []);
       addHandle(fileHandle);
     }
   };

@@ -40,6 +40,7 @@ export const GlobalProvider = (props) => {
   const [filesChecksum, setFilesChecksum] = useState({});
   window.filesChecksum = filesChecksum;
   const setFileChecksum = (name, md5CheckSum) => {
+    console.debug("storing checksum: ", name, md5CheckSum);
     setFilesChecksum((prevState) => ({ ...prevState, [name]: md5CheckSum }));
   };
   const removeFileChecksum = (name) => {
@@ -179,9 +180,9 @@ export const GlobalProvider = (props) => {
     // reCheckAllContractsExistence();
     for (const handle of handles) {
       if (handle.kind === "directory") {
-        await readDirContent(handle);
+        await readDirContent(handle, [handle.name]);
       } else if (handle.kind === "file") {
-        await readFileContent(handle);
+        await readFileContent(handle, []);
       }
     }
   };
@@ -199,7 +200,7 @@ export const GlobalProvider = (props) => {
     }
   }, [chainProvider, walletAddress]);
 
-  const readDirContent = async (dirHandle) => {
+  const readDirContent = async (dirHandle, prefix=[]) => {
     for await (const item of dirHandle.values()) {
       if (item.kind == "file") {
         const name = item.name;
@@ -209,8 +210,7 @@ export const GlobalProvider = (props) => {
           !name.endsWith(".dbg.json") &&
           !ignoredFileNames.some((n) => n == name)
         ) {
-          console.debug("** we have file: ", item);
-          await readFileContent(item);
+          await readFileContent(item, prefix);
         } else {
           console.debug("skipping file: ", item.name);
         }
@@ -219,7 +219,7 @@ export const GlobalProvider = (props) => {
           !item.name.startsWith(".") &&
           !ignoredDirNames.some((n) => n == item.name)
         ) {
-          readDirContent(item);
+          readDirContent(item, [...prefix, item.name]);
         } else {
           console.debug("skipping reading dir: ", item.name);
         }
@@ -227,18 +227,19 @@ export const GlobalProvider = (props) => {
     }
   };
 
-  const readFileContent = async (fileHandle) => {
+  const readFileContent = async (fileHandle, prefix=[]) => {
     const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
     const fileStringObj = JSON.stringify(fileJsonObj);
     const fileMd5 = md5(fileStringObj);
     const fileName = fileHandle.name?.split(".")?.[0];
 
-    if (filesChecksum[fileHandle.name] == fileMd5) {
-      console.debug("skipping: ", fileHandle.name, " as md5 is same ", fileMd5);
+    const fullPath = [...prefix, fileHandle.name].join("/");
+    if (filesChecksum[fullPath] == fileMd5) {
+      console.debug("skipping: ", fullPath, " as md5 is same ", fileMd5);
       return;
     } else {
-      console.debug("saving: ", fileHandle.name, " md5 for later ", fileMd5);
-      setFileChecksum(fileHandle.name, fileMd5);
+      console.debug("saving: ", fullPath, " md5 for later ", fileMd5);
+      setFileChecksum(fullPath, fileMd5);
     }
 
     // for foundry deployed file

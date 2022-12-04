@@ -13,4 +13,8 @@
 - do signatures
   - many times when it wants bytes from signing something
   - able to type something in, have it signed & then be put in
-- 
+
+## ui
+- when things dont work developers go to dev tools
+  - fix all messaging there
+  - point them to docs from there
