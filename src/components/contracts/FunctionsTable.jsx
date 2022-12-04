@@ -602,7 +602,12 @@ const FunctionExecButton = ({
   return (
     <ButtonGroup isAttached colorScheme={isView ? "blue" : "orange"}>
       <Button onClick={runFunc}>
-        <Text m={0} p={0} maxW={{base: "100px", md: "200px"}} overflow={"hidden"}>
+        <Text
+          m={0}
+          p={0}
+          maxW={{ base: "100px", md: "200px" }}
+          overflow={"hidden"}
+        >
           {abi.name}
         </Text>
       </Button>
@@ -694,9 +699,16 @@ const FunctionRow = ({
     const contractObj = isView ? contractReadObj : contractWriteObj;
     try {
       initiate(inputsArray);
-      const result = await contractObj.functions[name](...inputsArray, {
-        value: payableAmount,
-      });
+      const fullyQualifiedName = ethers.utils.Fragment.from(abi).format();
+      console.log("function: ", fullyQualifiedName);
+      console.log("input: ", inputsArray);
+      const result = await contractObj.functions[fullyQualifiedName](
+        ...inputsArray,
+        {
+          value: payableAmount,
+        }
+      );
+      console.log("output: ", result);
       if (isView) {
         finished(result);
       } else {
@@ -887,11 +899,11 @@ export default function FunctionsTable({ contractName }) {
           {/*<TableCaption>Functions read from contract's ABI</TableCaption>*/}
           <Thead>
             <Tr>
-              <Th w={'50%'}>Inputs</Th>
+              <Th w={"50%"}>Inputs</Th>
               {/*<Th>Inputs</Th>*/}
               {/*<Th w={{base: 'auto', xl: '300px'}}>Function</Th>*/}
-              <Th w={'auto'}>Function</Th>
-              <Th w={'50%'}>Outputs</Th>
+              <Th w={"auto"}>Function</Th>
+              <Th w={"50%"}>Outputs</Th>
               {/*<Th>Outputs</Th>*/}
             </Tr>
           </Thead>
