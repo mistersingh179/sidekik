@@ -40,7 +40,7 @@ export default function FilesInput(props) {
     updateFilePollingInterval,
   } = useContext(GlobalContext);
 
-  const { reloadToast } = useFileReloadToast();
+  const { reloadToast, rejectedToast } = useFileReloadToast();
 
   const contractNames = useMemo(() => Object.keys(contracts), [contracts]);
 
@@ -55,15 +55,24 @@ export default function FilesInput(props) {
     let directoryHandle;
     try {
       directoryHandle = await window.showDirectoryPicker({ id: pathId });
-      await readDirContent(directoryHandle, [directoryHandle.name]);
-      addHandle(directoryHandle);
+      const alreadyExists = handles.find(
+        (item) =>
+          item.kind === "directory" && item.name === directoryHandle.name
+      );
+      if (alreadyExists) {
+        rejectedToast(directoryHandle);
+        console.log("not adding: ", directoryHandle, " as it already exists");
+      } else {
+        await readDirContent(directoryHandle, [directoryHandle.name]);
+        addHandle(directoryHandle);
+      }
     } catch (e) {
       console.log("got error: ", e);
     }
   };
 
   const setupFileAccess = async (evt) => {
-    const handles = await window.showOpenFilePicker({
+    const inputHandles = await window.showOpenFilePicker({
       types: [
         {
           description: "JSON format",
@@ -75,10 +84,17 @@ export default function FilesInput(props) {
       multiple: true,
       excludeAcceptAllOption: true,
     });
-    // todo - this allows adding a file with same name of a file we already have
-    for (const fileHandle of handles) {
-      await readFileContent(fileHandle, []);
-      addHandle(fileHandle);
+    for (const inputHandle of inputHandles) {
+      const alreadyExists = handles.find(
+        (item) => item.kind === "file" && item.name === inputHandle.name
+      );
+      if (alreadyExists) {
+        rejectedToast(inputHandle);
+        console.log("not adding: ", inputHandle, " as it already exists");
+      } else {
+        await readFileContent(inputHandle, []);
+        addHandle(inputHandle);
+      }
     }
   };
 

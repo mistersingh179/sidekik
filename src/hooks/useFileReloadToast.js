@@ -2,6 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import { useContext } from "react";
 import GlobalContext from "../contexts/globalContext";
 import pluralize from "pluralize";
+import _ from 'lodash';
 
 export default function useFileReloadToast() {
   const toast = useToast();
@@ -21,12 +22,9 @@ export default function useFileReloadToast() {
       description: `Processing ${fileHandles.length} ${pluralize(
         "file",
         fileHandles.length
-      )} and ${dirHandles.length} ${pluralize(
-        "directory",
-        dirHandles.length
-      )}`,
+      )} and ${dirHandles.length} ${pluralize("directory", dirHandles.length)}`,
     });
-  }
+  };
 
   const fileMissingToast = () => {
     toast({
@@ -37,7 +35,18 @@ export default function useFileReloadToast() {
       duration: 5000,
       description: `Please upload ABI files`,
     });
-  }
+  };
 
-  return {reloadToast, fileMissingToast}
+  const rejectedToast = (handle) => {
+    toast({
+      status: "warning",
+      title: `Rejected – ${handle.name}`,
+      position: "bottom-right",
+      isClosable: true,
+      duration: 5000,
+      description: `${_.capitalize(handle.kind)} rejected as another with same name already exists`,
+    });
+  };
+
+  return { reloadToast, fileMissingToast, rejectedToast };
 }
