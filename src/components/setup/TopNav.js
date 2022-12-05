@@ -32,7 +32,7 @@ import { ethers } from "ethers";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 const ReloadAbi = (props) => {
-  const { readAgain, handles } = useContext(GlobalContext);
+  const { readAgain, handles, filePollingInterval } = useContext(GlobalContext);
 
   const { reloadToast } = useFileReloadToast();
 
@@ -46,8 +46,9 @@ const ReloadAbi = (props) => {
   }
 
   return (
-    <Tooltip label={"Reload ABI files"}>
+    <Tooltip label={"Reload files"}>
       <IconButton
+        colorScheme={!filePollingInterval ? 'teal' : 'gray'}
         size={"md"}
         icon={<RepeatIcon />}
         variant={"solid"}

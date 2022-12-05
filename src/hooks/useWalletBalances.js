@@ -19,7 +19,17 @@ export default function useWalletBalances(
 
   const refreshAllBalances = useCallback(async () => {
     const updatedBalances = {};
-    const addresses = [...chainAddresses, ...contractAddresses, ...impersonatedAddresses];
+    const addresses = [
+      ...chainAddresses,
+      ...contractAddresses,
+      ...impersonatedAddresses,
+    ];
+    console.log(
+      "in refreshAllBalances with: ",
+      chainAddresses,
+      contractAddresses,
+      impersonatedAddresses
+    );
     const balanceResults = await Promise.allSettled(
       addresses.map((address) => chainProvider.getBalance(address))
     );
