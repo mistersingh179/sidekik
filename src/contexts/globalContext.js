@@ -23,7 +23,7 @@ import md5 from "md5";
 import { useIsHardhat } from "../hooks/useIsHardhat";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import worker from 'workerize-loader!../workers/getFileMd5'
+import worker from "workerize-loader!../workers/getFileMd5";
 
 import useRecursiveTimeout from "../hooks/useRecursiveTimeout";
 
@@ -146,7 +146,7 @@ export const GlobalProvider = (props) => {
   const dirHandles = handles.filter((handle) => handle.kind === "directory");
   const fileHandles = handles.filter((handle) => handle.kind === "file");
 
-  const [filePollingInterval, updateFilePollingInterval] = useState(null);
+  const [filePollingInterval, updateFilePollingInterval] = useState(2000);
   useRecursiveTimeout(
     () => readAgain(),
     handles.length > 0 ? filePollingInterval : null
@@ -270,9 +270,13 @@ export const GlobalProvider = (props) => {
 
     // for foundry out file which has ABI
     if (
-      _.isObject(fileJsonObj.abi) &&
-      _.isObject(fileJsonObj.ast) &&
-      _.isObject(fileJsonObj.metadata)
+      _.isArray(fileJsonObj.abi) &&
+      !_.isEmpty(fileJsonObj.abi) &&
+      _.isObject(fileJsonObj.bytecode) &&
+      _.isString(fileJsonObj.bytecode.object) &&
+      fileJsonObj.bytecode.object !== "0x" &&
+      _.isObject(fileJsonObj.methodIdentifiers) &&
+      !_.isEmpty(fileJsonObj.methodIdentifiers)
     ) {
       const abi = fileJsonObj.abi;
       const name = fileName;
@@ -280,7 +284,13 @@ export const GlobalProvider = (props) => {
     }
 
     // for Artifact Files
-    if (fileJsonObj["contractName"] && fileJsonObj["abi"]) {
+    if (
+      _.isString(fileJsonObj["contractName"]) &&
+      _.isArray(fileJsonObj["abi"]) &&
+      !_.isEmpty(fileJsonObj["abi"]) &&
+      _.isString(fileJsonObj.bytecode) &&
+      fileJsonObj.bytecode !== "0x"
+    ) {
       const name = fileJsonObj["contractName"];
       const abi = fileJsonObj["abi"];
       if (_.isArray(abi) && _.isString(name)) {

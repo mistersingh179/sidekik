@@ -57,8 +57,6 @@
 - every transaction leads to a bunch of getBalance calls
 - when no network, it is reading every 1 second, and flashing the input contracts
 - pending tx via metamask did not show spinner while tx was being mined
-- slow with whole directory loaded in
-- ignore blank `[]` abi's when parsing. shows lots empty items when parsing complete directories
 - unable to use on brave ✅
 - show message asking to use chrome ✅
   - showOpenFilePicker does not work ✅
@@ -77,6 +75,9 @@
   - this is to not block UI when it is reading the disk ✅
 - change polling to be 2 seconds ✅
 - changed polling delay to be a gap after reading ended ✅
+- slow with whole directory loaded in ✅
+- ignore blank `[]` abi's when parsing. shows lots empty items when parsing complete directories  ✅
+- ignoring abi files with empty abi and bytecodes for hardhat & foundry format ✅
 
 
 ## bugs from silvertongue
