@@ -99,7 +99,7 @@ export default function FilesInput(props) {
   };
 
   const handleChangePollReRead = (evt) => {
-    updateFilePollingInterval(evt.target.checked ? 1000 : null);
+    updateFilePollingInterval(evt.target.checked ? 2000 : null);
   };
 
   const handleReadAgainClick = (evt) => {

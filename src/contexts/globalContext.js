@@ -22,6 +22,11 @@ import doesContractCodeExist from "../helpers/doesContractCodeExist";
 import md5 from "md5";
 import { useIsHardhat } from "../hooks/useIsHardhat";
 
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import worker from 'workerize-loader!../workers/getFileMd5'
+
+import useRecursiveTimeout from "../hooks/useRecursiveTimeout";
+
 const {
   utils: { isAddress, formatEther, formatUnits, parseUnits, isHexString },
   constants: { AddressZero },
@@ -142,7 +147,7 @@ export const GlobalProvider = (props) => {
   const fileHandles = handles.filter((handle) => handle.kind === "file");
 
   const [filePollingInterval, updateFilePollingInterval] = useState(null);
-  useInterval(
+  useRecursiveTimeout(
     () => readAgain(),
     handles.length > 0 ? filePollingInterval : null
   );
@@ -175,7 +180,7 @@ export const GlobalProvider = (props) => {
   };
 
   const readAgain = async (evt) => {
-    console.debug("in readAgain");
+    console.log("in readAgain", new Date().getTime(), filePollingInterval);
     // temp stopping this check
     // reCheckAllContractsExistence();
     for (const handle of handles) {
@@ -200,7 +205,7 @@ export const GlobalProvider = (props) => {
     }
   }, [chainProvider, walletAddress]);
 
-  const readDirContent = async (dirHandle, prefix=[]) => {
+  const readDirContent = async (dirHandle, prefix = []) => {
     for await (const item of dirHandle.values()) {
       if (item.kind == "file") {
         const name = item.name;
@@ -212,35 +217,43 @@ export const GlobalProvider = (props) => {
         ) {
           await readFileContent(item, prefix);
         } else {
-          console.debug("skipping file: ", item.name);
+          // console.debug("skipping file: ", item.name);
         }
       } else if (item.kind == "directory") {
         if (
           !item.name.startsWith(".") &&
           !ignoredDirNames.some((n) => n == item.name)
         ) {
-          readDirContent(item, [...prefix, item.name]);
+          await readDirContent(item, [...prefix, item.name]);
         } else {
-          console.debug("skipping reading dir: ", item.name);
+          // console.debug("skipping reading dir: ", item.name);
         }
       }
     }
   };
 
-  const readFileContent = async (fileHandle, prefix=[]) => {
-    const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
-    const fileStringObj = JSON.stringify(fileJsonObj);
-    const fileMd5 = md5(fileStringObj);
+  const readFileContent = async (fileHandle, prefix = []) => {
+    // const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
+    // const fileStringObj = JSON.stringify(fileJsonObj);
+    // console.log("STARTING Worker");
+    let instance = worker();
+    const fileMd5 = await instance.getFileMd5(fileHandle);
+    instance.terminate();
+    // console.log("TERMINATED Worker");
+    // const {status, fileMd5} = await getMd5(fileHandle);
+
     const fileName = fileHandle.name?.split(".")?.[0];
 
     const fullPath = [...prefix, fileHandle.name].join("/");
     if (filesChecksum[fullPath] == fileMd5) {
-      console.debug("skipping: ", fullPath, " as md5 is same ", fileMd5);
+      // console.debug("skipping: ", fullPath, " as md5 is same ", fileMd5);
       return;
     } else {
       console.debug("saving: ", fullPath, " md5 for later ", fileMd5);
       setFileChecksum(fullPath, fileMd5);
     }
+
+    const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
 
     // for foundry deployed file
     if (

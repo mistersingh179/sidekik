@@ -294,7 +294,7 @@ const InputArrayContainer = ({ inputAbi, value, setInput }) => {
   };
   const numOfInputs = state.length;
   useEffect(() => {
-    console.log("*** latest state: ", state);
+    console.debug("*** latest state: ", state);
     setInput(state);
   }, [state]);
   return (

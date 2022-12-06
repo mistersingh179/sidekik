@@ -1,11 +1,13 @@
 import {
   Box,
-  Button, ButtonGroup,
+  Button,
+  ButtonGroup,
   Heading,
   Highlight,
-  HStack, IconButton,
+  HStack,
+  IconButton,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import React, { useCallback, useState } from "react";
 import {
@@ -17,7 +19,7 @@ import {
   MenuGroup,
   MenuOptionGroup,
   MenuDivider,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import groupSimilarFunctionNames from "group-similar-functions";
 
@@ -66,7 +68,7 @@ export default function StateIsOutside(props) {
   return (
     <>
       <Heading>State is Outside</Heading>
-      <MyContainer />
+      <Button>Call Worker</Button>
     </>
   );
 }

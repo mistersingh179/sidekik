@@ -235,6 +235,15 @@ wallet
   - left right arrows to go between columns
 - add ability to stop impersonating
   - this is important, coz if we impersonate a contract, then we can't call functions of that contract till we stop impersonating it 
+- allow sharing, this makes it compete with etherscan
+  - put address & network in URL
+  - when loading use address & network to build UI
+    - this will make sharing work, when network is all but local/private testnet
+  - build share icon where you can select which contracts & functions to share
+    - also provide iframe widget, so shared link can be composed inside a blog
+    - shared link / app should work inside iframe
+- put drop down of networks, so they can select mainnet, goerli, polygon etc.
+  - they can also enter custom url
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

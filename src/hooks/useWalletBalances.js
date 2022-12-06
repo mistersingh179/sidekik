@@ -24,7 +24,7 @@ export default function useWalletBalances(
       ...contractAddresses,
       ...impersonatedAddresses,
     ];
-    console.log(
+    console.debug(
       "in refreshAllBalances with: ",
       chainAddresses,
       contractAddresses,
