@@ -245,7 +245,10 @@ wallet
 - put drop down of networks, so they can select mainnet, goerli, polygon etc.
   - they can also enter custom url
 - inform the user what contracts we read, ignored etc., this way they can fix or triage why their contracts are not being read or why the wrong contracts are being read.
-
+- in settings allow user to select what kind of files we should parse
+  - e.g. don't parse abi file with
+  - allow adding own exclude list. you may want to exclude oz, build, build-info etc., .env file 
+- be able to parse files where the chain name is in the name of the file e.g. `mumbai_auction.json`
 # bugs
 - display Number should not say Eth, but say 10^18 etc.
   - for example output of Dai should say 55 Million Dai, not 55 Million Eth

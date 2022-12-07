@@ -8,7 +8,6 @@ export default function useInjectedProviderEventManager(
 ) {
   useEffect(() => {
     if (injectedProvider?.provider?.on) {
-      console.log("adding handlers");
 
       const handleAccountChanged = ([account]) => {
         console.log("got new account: ", account);
@@ -28,7 +27,6 @@ export default function useInjectedProviderEventManager(
       injectedProvider.provider.on("accountsChanged", handleAccountChanged);
       injectedProvider.provider.on("chainChanged", handleChainChanged);
       return () => {
-        console.log("removing handlers");
         injectedProvider.provider.removeListener(
           "disconnect",
           handleClickDisconnectWallet
@@ -43,7 +41,7 @@ export default function useInjectedProviderEventManager(
         );
       };
     } else {
-      console.log("injectProvider doesn't have ON: ", injectedProvider);
+      // console.log("injectProvider doesn't have ON: ", injectedProvider);
     }
   }, [injectedProvider, injectedProvider && injectedProvider.provider]);
 }

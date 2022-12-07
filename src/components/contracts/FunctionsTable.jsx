@@ -294,7 +294,7 @@ const InputArrayContainer = ({ inputAbi, value, setInput }) => {
   };
   const numOfInputs = state.length;
   useEffect(() => {
-    console.debug("*** latest state: ", state);
+    // console.debug("*** latest state: ", state);
     setInput(state);
   }, [state]);
   return (
@@ -406,7 +406,6 @@ const TransactionError = ({ error }) => {
 
 const Events = ({ events, eventsAbi }) => {
   events = events.filter((eventObj) => !!eventObj.args && !!eventObj.event);
-  console.debug("building events with: ", events, eventsAbi);
   if (!events || events.length == 0) {
     return "";
   }
@@ -442,7 +441,6 @@ const Event = ({ eventObj, eventsAbi }) => {
 };
 
 const Outputs = ({ outputsAbi, result }) => {
-  console.debug("*** in Outputs with abi & result: ", outputsAbi, result);
   return (
     <VStack
       spacing={2}
@@ -879,7 +877,7 @@ export default function FunctionsTable({ contractName }) {
   window.contractReadObj = contractReadObj;
 
   useEffect(() => {
-    console.debug("got new functions: ", functions);
+    // console.debug("got new functions: ", functions);
   }, [functions]);
 
   return (

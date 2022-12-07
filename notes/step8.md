@@ -12,6 +12,19 @@
   - accept its contract address file ✅
     - it has deployedTo in the key ✅
   - support impersonating ✅
+- remove confusing console.logs ✅
+- make ajax call first before RPC to catch & show pretty error ✅ 
+- add instructions in the console ✅
+- walletBalance unable to read error when chain is broken ✅
+- disable continue button unless at least 1 contract has address ✅
+- add tooltip to the continue button ✅
+- ui freaks out if chainProvider is bad and contracts are entered ✅
+  - it starts refreshing over & over ✅
+- provide help tooltip on sync directory & files ✅
+- make RPC box red when endpoint unavailable ✅
+- check rpc is good beforehand by making an actual RPC call ✅
+  - a valid URL which is not a RPC should fail ✅
+- add intercom
 
 ## content
 
@@ -41,6 +54,13 @@
 - or Connect -> to or MetaMask ✅
 - connect tour & Learn more to -> get started ✅
 - update home page video ✅
+- make sync be one button
+  - opens a modal, where it explains what is needed
+  - then user can pick sync directory or file
+- make connect one button
+  - user hits connect to get started
+  - opens a modal, where we explain what is needed
+  - then user picks RPC or metamask
 
 ## bug
 
@@ -68,6 +88,10 @@
 - not fetching abi when connected to metamask
 - address field should either be editable or not be there
 - shows continue button, when there is no address, just a contract
+- fix name of worker file
+- fix name of woker instance from instance to something else
+- refactor contract missing messaging to be when chain - yes & contracts - no
+- refactor processRpcUrl to have proper if statement for instance.current
 
 ### bug - slowness / performance issue when syncing directory
 

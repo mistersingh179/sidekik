@@ -28,7 +28,7 @@ const TYPES = {
 
 export default function useContractFileData() {
   const reducer = (state, action) => {
-    console.debug("in reducer with: ", action);
+    // console.debug("in reducer with: ", action);
 
     switch (action.type) {
       case TYPES.ADD_CONTRACT: {
@@ -85,7 +85,6 @@ export default function useContractFileData() {
   window.c = contracts;
 
   const addContractAddress = async (name, address) => {
-    console.debug("in addContract Address");
     dispatch({
       type: TYPES.ADD_CONTRACT_ADDRESS,
       address: address,

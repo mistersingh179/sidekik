@@ -15,10 +15,8 @@ export default function useGasPrice() {
 
   useEffect(() => {
     const getGasPrice = async () => {
-      console.log("in getGasPrice");
       const response = await fetch(gasUrl);
       const body = await response.json()
-      console.log(body);
       if(body.status === '1' && body.result?.SafeGasPrice){
         updateWei(parseUnits(body.result.SafeGasPrice, 9));
       }

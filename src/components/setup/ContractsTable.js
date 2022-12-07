@@ -70,20 +70,11 @@ const AbiTag = ({ abi }) => {
             `${fnCount} ${pluralize("function", fnCount)}.`
           }
         >
-          {/*  <VStack spacing={1}>*/}
-          {/*    <Heading size={'xs'}>ABI processed with following properties: </Heading>*/}
-          {/*    <Text>{Object.keys(iface.fragments).length} fragments</Text>*/}
-          {/*    <Text>{Object.keys(iface.errors).length} errors</Text>*/}
-          {/*    <Text>{Object.keys(iface.events).length} events</Text>*/}
-          {/*    <Text>{Object.keys(iface.functions).length} functions</Text>*/}
-          {/*  </VStack>*/}
           <Badge colorScheme="green">Found</Badge>
         </Tooltip>
       </>
     );
-    console.log("interface: ", iface);
   } catch (e) {
-    console.log("error processing: ", abi, e);
     return <Badge colorScheme="red">Not Found</Badge>;
   }
 };

@@ -17,9 +17,9 @@ export default function useInjectedProvider() {
   });
 
   const handleClickConnectWallet = async (evt) => {
-    console.log("IN handleClickConnectWallet")
     const metaMaskProvider = await web3Modal.connect();
     const injectedProvider = new Web3Provider(metaMaskProvider);
+    console.log("got valid ✅ RPC from metamask 🦊. awesome. 🥳 🎉 ");
     updateInjectedProvider(injectedProvider);
     const network = await injectedProvider.getNetwork();
     updateInjectedNetwork(network);

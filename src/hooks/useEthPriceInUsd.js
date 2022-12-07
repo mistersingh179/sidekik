@@ -15,7 +15,6 @@ export default function useEthPriceInUsd() {
 
   useEffect(() => {
     const getEthPrice = async () => {
-      console.log("in getEthPrice");
       const response = await fetch(ethPriceUrl);
       const body = await response.json()
       if(body.status === '1' && body.result?.ethusd){

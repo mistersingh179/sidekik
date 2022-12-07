@@ -25,6 +25,7 @@ import pluralize from "pluralize";
 import useFileReloadToast from "../../hooks/useFileReloadToast";
 import SetupContractManually from "./SetupContractManually";
 import { hasFileFeatures } from "./BrowserIssue";
+import { isAddress } from "ethers/lib/utils";
 
 export default function FilesInput(props) {
   const {
@@ -43,15 +44,28 @@ export default function FilesInput(props) {
   const { reloadToast, rejectedToast } = useFileReloadToast();
 
   const contractNames = useMemo(() => Object.keys(contracts), [contracts]);
+  const hasContractWithAddress = useMemo(() => {
+    const found = Object.values(contracts).find(
+      (item) => item?.abi?.length > 0 && isAddress(item.address)
+    );
+    return !!found;
+  }, [contracts]);
+  const canNotContinueLabel =
+    !hasContractWithAddress &&
+    "To continue forward and explore contracts, you first need to give sidekik the contracts address & ABI.";
 
   const canAccessFiles = hasFileFeatures();
   const canNotAccessFiles = !canAccessFiles;
-  const label =
-    canNotAccessFiles &&
+  const canNotAccessFilesLabel =
     "Sorry, but this feature is currently only available in Google Chrome v86+";
+  const syncFileLabel =
+    "This is the [recommended] way. Just upload a json file with yours contracts address & ABI. " +
+    "Note: If you dont have any such file, you should first set that up.";
+  const syncDirLabel =
+    "Upload your project directory & let sidekik find the all contract addressses & their ABI's. " +
+    "Note: Sidekik can only find addresses if you are actually storing them to a file.";
 
   const setupDirAccess = async (pathId, evt) => {
-    console.debug(pathId, evt);
     let directoryHandle;
     try {
       directoryHandle = await window.showDirectoryPicker({ id: pathId });
@@ -67,34 +81,38 @@ export default function FilesInput(props) {
         addHandle(directoryHandle);
       }
     } catch (e) {
-      console.log("got error: ", e);
+      console.log(e);
     }
   };
 
   const setupFileAccess = async (evt) => {
-    const inputHandles = await window.showOpenFilePicker({
-      types: [
-        {
-          description: "JSON format",
-          accept: {
-            "application/*": [".json"],
+    try {
+      const inputHandles = await window.showOpenFilePicker({
+        types: [
+          {
+            description: "JSON format",
+            accept: {
+              "application/*": [".json"],
+            },
           },
-        },
-      ],
-      multiple: true,
-      excludeAcceptAllOption: true,
-    });
-    for (const inputHandle of inputHandles) {
-      const alreadyExists = handles.find(
-        (item) => item.kind === "file" && item.name === inputHandle.name
-      );
-      if (alreadyExists) {
-        rejectedToast(inputHandle);
-        console.log("not adding: ", inputHandle, " as it already exists");
-      } else {
-        await readFileContent(inputHandle, []);
-        addHandle(inputHandle);
+        ],
+        multiple: true,
+        excludeAcceptAllOption: true,
+      });
+      for (const inputHandle of inputHandles) {
+        const alreadyExists = handles.find(
+          (item) => item.kind === "file" && item.name === inputHandle.name
+        );
+        if (alreadyExists) {
+          rejectedToast(inputHandle);
+          console.log("not adding: ", inputHandle, " as it already exists");
+        } else {
+          await readFileContent(inputHandle, []);
+          addHandle(inputHandle);
+        }
       }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -112,7 +130,11 @@ export default function FilesInput(props) {
       <Text>Provide Contract ABI's & their Addresses</Text>
       <Wrap spacing={2} flexWrap={"wrap"} justify={"center"}>
         <WrapItem>
-          <Tooltip hasArrow label={label} bg={"red.600"} shouldWrapChildren>
+          <Tooltip
+            hasArrow
+            label={canNotAccessFiles ? canNotAccessFilesLabel : syncDirLabel}
+            shouldWrapChildren
+          >
             <Button
               onClick={setupDirAccess.bind(this, "dirPath")}
               isDisabled={canNotAccessFiles}
@@ -122,9 +144,13 @@ export default function FilesInput(props) {
           </Tooltip>
         </WrapItem>
         <WrapItem>
-          <Tooltip hasArrow label={label} bg={"red.600"} shouldWrapChildren>
+          <Tooltip
+            hasArrow
+            label={canNotAccessFiles ? canNotAccessFilesLabel : syncFileLabel}
+            shouldWrapChildren
+          >
             <Button onClick={setupFileAccess} isDisabled={canNotAccessFiles}>
-              Upload File(s)
+              Sync File(s)
             </Button>
           </Tooltip>
         </WrapItem>
@@ -183,15 +209,17 @@ export default function FilesInput(props) {
         >
           Read Again
         </Button>
-        <ReactRouterLink to={"/contracts"}>
-          <Button
-            colorScheme={"teal"}
-            rightIcon={<ArrowForwardIcon />}
-            isDisabled={contractNames.length == 0}
-          >
-            Continue
-          </Button>
-        </ReactRouterLink>
+        <Tooltip hasArrow label={canNotContinueLabel}>
+          <ReactRouterLink to={"/contracts"}>
+            <Button
+              colorScheme={"teal"}
+              rightIcon={<ArrowForwardIcon />}
+              isDisabled={!hasContractWithAddress}
+            >
+              Continue
+            </Button>
+          </ReactRouterLink>
+        </Tooltip>
       </HStack>
     </VStack>
   );

@@ -5,13 +5,13 @@ const readJsonObjFromFileHandle = async (fileHandle) => {
       try {
         return JSON.parse(await file.text());
       } catch (e) {
-        console.debug("skipping file as fails to json parse ", file.name);
+        // console.debug("skipping file as fails to json parse ", file.name);
       }
     } else {
-      console.debug("skipping file as type not json", file.name);
+      // console.debug("skipping file as type not json", file.name);
     }
   } catch {
-    console.log("unable to get file: ", fileHandle);
+    // console.log("unable to get file: ", fileHandle);
   }
 
   return {};

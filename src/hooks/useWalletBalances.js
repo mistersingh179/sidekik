@@ -24,26 +24,28 @@ export default function useWalletBalances(
       ...contractAddresses,
       ...impersonatedAddresses,
     ];
-    console.debug(
-      "in refreshAllBalances with: ",
-      chainAddresses,
-      contractAddresses,
-      impersonatedAddresses
-    );
-    const balanceResults = await Promise.allSettled(
-      addresses.map((address) => chainProvider.getBalance(address))
-    );
-    addresses.forEach((address, index) => {
-      const balanceResult = balanceResults[index];
-      if (balanceResult.status === "fulfilled") {
-        updatedBalances[address] = balanceResult.value;
-      } else {
-        updatedBalances[address] = BigNumber.from(0);
-      }
-    });
-    updateWalletBalanceHash((prevState) => {
-      return { ...prevState, ...updatedBalances };
-    });
+    // console.debug(
+    //   "in refreshAllBalances with: ",
+    //   chainAddresses,
+    //   contractAddresses,
+    //   impersonatedAddresses
+    // );
+    if (chainProvider) {
+      const balanceResults = await Promise.allSettled(
+        addresses.map((address) => chainProvider.getBalance(address))
+      );
+      addresses.forEach((address, index) => {
+        const balanceResult = balanceResults[index];
+        if (balanceResult.status === "fulfilled") {
+          updatedBalances[address] = balanceResult.value;
+        } else {
+          updatedBalances[address] = BigNumber.from(0);
+        }
+      });
+      updateWalletBalanceHash((prevState) => {
+        return { ...prevState, ...updatedBalances };
+      });
+    }
   }, [chainProvider, contractAddresses, chainAddresses, impersonatedAddresses]);
 
   useEffect(() => {

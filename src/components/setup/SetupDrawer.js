@@ -90,13 +90,13 @@ export const RpcUrlInputBox = () => {
     let result;
     if (injectedProvider) {
       result =
-        "This is not being used as you are connected to MetaMask and using the RPC url injected by it.";
+        "This is not being used as you are connected to MetaMask and sidekik is using the RPC selected in MetaMask";
     } else {
       if (isRpcValid) {
         result = `Successfully connected to: ${chainId} / ${chainName} `;
       } else {
         result =
-          "Unable to connect to this url. Make sure a node is running at the provided endpoint.";
+          "Unable to connect to this url. Make sure a node is running at the provided endpoint or connect to metamask and then select RPC endpoint in metamask.";
       }
     }
     return result;
@@ -122,6 +122,8 @@ export const RpcUrlInputBox = () => {
       <Tooltip placement={"bottom"} hasArrow label={rpcTooltipMessage}>
         <InputGroup w={"auto"}>
           <Input
+            isInvalid={!rpcInputDisabled && !isRpcValid}
+            focusBorderColor={isRpcValid ? '': 'red.500'}
             isDisabled={rpcInputDisabled}
             placeholder={"RPC Url to the blockchain"}
             value={rpcUrl}

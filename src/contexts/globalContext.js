@@ -24,7 +24,7 @@ import md5 from "md5";
 import { useIsHardhat } from "../hooks/useIsHardhat";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import worker from "workerize-loader?name=getFileMd5!../workers/getFileMd5";
+import worker from "workerize-loader?name=bg!../workers/bg";
 
 import useRecursiveTimeout from "../hooks/useRecursiveTimeout";
 
@@ -43,10 +43,12 @@ const ignoredDirNames = ["cache", "node_modules"];
 export const GlobalProvider = (props) => {
   const { children } = props;
 
+  const workerRef = useRef();
+  window.workerRef = workerRef;
   const [filesChecksum, setFilesChecksum] = useState({});
   window.filesChecksum = filesChecksum;
   const setFileChecksum = (name, md5CheckSum) => {
-    console.debug("storing checksum: ", name, md5CheckSum);
+    // console.debug("storing checksum: ", name, md5CheckSum);
     setFilesChecksum((prevState) => ({ ...prevState, [name]: md5CheckSum }));
   };
   const removeFileChecksum = (name) => {
@@ -64,7 +66,7 @@ export const GlobalProvider = (props) => {
     isRpcValid,
     localProvider,
     localNetwork,
-  } = useRpcUrlProcessor();
+  } = useRpcUrlProcessor(workerRef);
 
   const {
     injectedProvider,
@@ -181,7 +183,7 @@ export const GlobalProvider = (props) => {
   };
 
   const readAgain = async (evt) => {
-    console.log("in readAgain", new Date().getTime(), filePollingInterval);
+    // console.log("in readAgain", new Date().getTime(), filePollingInterval);
     // temp stopping this check
     // reCheckAllContractsExistence();
     for (const handle of handles) {
@@ -233,11 +235,10 @@ export const GlobalProvider = (props) => {
     }
   };
 
-  const instance = useRef();
   useEffect(() => {
-    instance.current = worker();
+    workerRef.current = worker();
     return () => {
-      instance.current.terminate();
+      workerRef.current.terminate();
     };
   }, []);
 
@@ -245,9 +246,9 @@ export const GlobalProvider = (props) => {
     // const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
     // const fileStringObj = JSON.stringify(fileJsonObj);
     // console.log("STARTING Worker");
-    // let instance = worker();
-    const fileMd5 = await instance.current.getFileMd5(fileHandle);
-    // instance.terminate();
+    // let workerRef = worker();
+    const fileMd5 = await workerRef.current.getFileMd5(fileHandle);
+    // workerRef.terminate();
     // console.log("TERMINATED Worker");
     // const {status, fileMd5} = await getMd5(fileHandle);
 
@@ -258,7 +259,7 @@ export const GlobalProvider = (props) => {
       // console.debug("skipping: ", fullPath, " as md5 is same ", fileMd5);
       return;
     } else {
-      console.debug("saving: ", fullPath, " md5 for later ", fileMd5);
+      // console.debug("saving: ", fullPath, " md5 for later ", fileMd5);
       setFileChecksum(fullPath, fileMd5);
     }
 
@@ -457,21 +458,13 @@ export const GlobalProvider = (props) => {
   useEffect(() => {
     let intervalHandler;
     if (!isRpcValid && !injectedProvider) {
-      console.log(
-        "!!!injectedProvider is not there & rpc is not valid. will setup polling for RPC"
-      );
       intervalHandler = setInterval(() => {
-        console.debug("!!!in interval function. processing RPC url again");
-        processRpcUrl();
+          processRpcUrl();
       }, [1000]);
     } else {
-      console.log(
-        "!!!we have a provider now. no need to poll for RPC. removing polling"
-      );
       clearInterval(intervalHandler);
     }
     return () => {
-      console.log("!!!removing polling as going to be re-rendered");
       clearInterval(intervalHandler);
     };
   }, [injectedProvider, isRpcValid]);
