@@ -39,7 +39,6 @@ const {
 } = ethers;
 
 const AbiTag = ({ abi }) => {
-  console.debug("in AbiTag with: ", abi);
   if (!abi || abi.length == 0) {
     return (
       <Tooltip
@@ -109,8 +108,6 @@ export default function ContractsTable(props) {
     });
     return keys;
   }, [contracts]);
-
-  console.debug("**** contractNames are: ", contractNames);
 
   const handleInputChange = async (name, evt) => {
     const address = evt.target.value;

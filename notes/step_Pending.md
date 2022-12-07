@@ -244,6 +244,7 @@ wallet
     - shared link / app should work inside iframe
 - put drop down of networks, so they can select mainnet, goerli, polygon etc.
   - they can also enter custom url
+- inform the user what contracts we read, ignored etc., this way they can fix or triage why their contracts are not being read or why the wrong contracts are being read.
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

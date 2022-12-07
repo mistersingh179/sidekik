@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { ethers } from "ethers";
@@ -23,7 +24,7 @@ import md5 from "md5";
 import { useIsHardhat } from "../hooks/useIsHardhat";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import worker from "workerize-loader!../workers/getFileMd5";
+import worker from "workerize-loader?name=getFileMd5!../workers/getFileMd5";
 
 import useRecursiveTimeout from "../hooks/useRecursiveTimeout";
 
@@ -232,13 +233,21 @@ export const GlobalProvider = (props) => {
     }
   };
 
+  const instance = useRef();
+  useEffect(() => {
+    instance.current = worker();
+    return () => {
+      instance.current.terminate();
+    };
+  }, []);
+
   const readFileContent = async (fileHandle, prefix = []) => {
     // const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
     // const fileStringObj = JSON.stringify(fileJsonObj);
     // console.log("STARTING Worker");
-    let instance = worker();
-    const fileMd5 = await instance.getFileMd5(fileHandle);
-    instance.terminate();
+    // let instance = worker();
+    const fileMd5 = await instance.current.getFileMd5(fileHandle);
+    // instance.terminate();
     // console.log("TERMINATED Worker");
     // const {status, fileMd5} = await getMd5(fileHandle);
 
