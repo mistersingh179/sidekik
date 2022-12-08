@@ -26,28 +26,23 @@
   - a valid URL which is not a RPC should fail ✅
 - add intercom ✅
   - integrate id in to clarity ✅
-- add presets for abi
-- mention https://github.com/ConsenSys/ethereum-developer-tools-list/pull/356 on Dec 9
 
 ## content
 
 - rearrange content to fit in truffle ✅
 - update foundry instructions with chokidar ✅
-- do something with flashbots
-- do something with chainlink
-- do something with zkSync
 - write about how to deploy code in real time & sav addresses to a file. ✅
 - add new demo video to "introduction to sidekik" & homepage ✅
 - build docs with gitbook ✅
+- make video of hot reloading for foundry ✅
+- write about web worker ✅
 - investigate ethbuilders.nyc
 - setup meetup
-- make video of hot reloading for foundry ✅
-- write about web worker
 
 ## ui
 
 - add message when browser is not supported ✅
-- when launching tell them boldly that no network has been found.
+- tell them boldly no network has not been set up.  ✅ 
 - bigger error when no chain connected
 - make address box editable on setup Files screen
 - move $ in decimals to the bottom
@@ -95,6 +90,8 @@
 - fix name of woker instance from instance to something else
 - refactor contract missing messaging to be when chain - yes & contracts - no
 - refactor processRpcUrl to have proper if statement for instance.current
+- removing and adding directory does not read its files which were before removed.
+  - seems like it still has cache even though it was removed.
 
 ### bug - slowness / performance issue when syncing directory
 

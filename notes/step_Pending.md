@@ -249,6 +249,8 @@ wallet
   - e.g. don't parse abi file with
   - allow adding own exclude list. you may want to exclude oz, build, build-info etc., .env file 
 - be able to parse files where the chain name is in the name of the file e.g. `mumbai_auction.json`
+- add presets for abi like erc20, 721 etc.
+
 # bugs
 - display Number should not say Eth, but say 10^18 etc.
   - for example output of Dai should say 55 Million Dai, not 55 Million Eth
@@ -275,3 +277,8 @@ wallet
 
 # reported bugs
 - Formatting isn't great on smaller desktop devices which makes it difficult for me to be able to interact with your application
+
+# content
+- do something with flashbots
+- do something with chainlink
+- do something with zkSync

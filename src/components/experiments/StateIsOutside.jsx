@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Menu,
   MenuButton,
@@ -65,10 +65,20 @@ const MyContainer = (props) => {
 };
 
 export default function StateIsOutside(props) {
+  const handler = () => {
+    console.log("start");
+    setTimeout(() => {
+      console.log("***in timeout cb***");
+    }, 0);
+    for (let i = 0; i < 1_000; i++) {
+      console.log('in loop');
+    }
+    console.log("end");
+  };
   return (
     <>
       <Heading>State is Outside</Heading>
-      <Button>Call Worker</Button>
+      <Button onClick={handler}>Call Worker</Button>
     </>
   );
 }

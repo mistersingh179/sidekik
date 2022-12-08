@@ -39,6 +39,7 @@ export default function FilesInput(props) {
     readAgain,
     filePollingInterval,
     updateFilePollingInterval,
+    isRpcValid,
   } = useContext(GlobalContext);
 
   const { reloadToast, rejectedToast } = useFileReloadToast();
@@ -50,9 +51,20 @@ export default function FilesInput(props) {
     );
     return !!found;
   }, [contracts]);
-  const canNotContinueLabel =
-    !hasContractWithAddress &&
-    "To continue forward and explore contracts, you first need to give sidekik the contracts address & ABI.";
+  const addressAbiMissingLabel =
+    "🚦🚧🚦To continue forward and explore contracts, you first need to sync files or directories " +
+    "which give sidekik your contracts address & ABI.";
+  const rpcInvalidLabel =
+    "To continue forward you first need to connect to a valid Blockchain RPC node. " +
+    "Either enter the address of your local blockchain node or simply connect to metamask.";
+  let continueLabel;
+  if (!hasContractWithAddress) {
+    continueLabel = addressAbiMissingLabel;
+  } else if (!isRpcValid) {
+    continueLabel = rpcInvalidLabel;
+  } else {
+    continueLabel = "Lets go 🚀 and explore smart contracts 🔥";
+  }
 
   const canAccessFiles = hasFileFeatures();
   const canNotAccessFiles = !canAccessFiles;
@@ -209,12 +221,12 @@ export default function FilesInput(props) {
         >
           Read Again
         </Button>
-        <Tooltip hasArrow label={canNotContinueLabel}>
+        <Tooltip hasArrow label={continueLabel}>
           <ReactRouterLink to={"/contracts"}>
             <Button
               colorScheme={"teal"}
               rightIcon={<ArrowForwardIcon />}
-              isDisabled={!hasContractWithAddress}
+              isDisabled={!hasContractWithAddress || !isRpcValid}
             >
               Continue
             </Button>
