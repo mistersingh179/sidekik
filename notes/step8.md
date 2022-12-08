@@ -24,7 +24,10 @@
 - make RPC box red when endpoint unavailable ✅
 - check rpc is good beforehand by making an actual RPC call ✅
   - a valid URL which is not a RPC should fail ✅
-- add intercom
+- add intercom ✅
+  - integrate id in to clarity ✅
+- add presets for abi
+- mention https://github.com/ConsenSys/ethereum-developer-tools-list/pull/356 on Dec 9
 
 ## content
 

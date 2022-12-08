@@ -10,6 +10,11 @@ export default function Home(props) {
       api_base: "https://api-iam.intercom.io",
       app_id: "vesl7md6",
     });
+    setTimeout(() => {
+      const intercomId = window.Intercom("getVisitorId");
+      window.clarity("set", "IntercomVisitorId", intercomId);
+      window.clarity("identify", intercomId);
+    }, 5000);
   }, []);
 
   const location = useLocation();
