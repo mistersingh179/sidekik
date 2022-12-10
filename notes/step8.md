@@ -13,7 +13,7 @@
     - it has deployedTo in the key ✅
   - support impersonating ✅
 - remove confusing console.logs ✅
-- make ajax call first before RPC to catch & show pretty error ✅ 
+- make ajax call first before RPC to catch & show pretty error ✅
 - add instructions in the console ✅
 - walletBalance unable to read error when chain is broken ✅
 - disable continue button unless at least 1 contract has address ✅
@@ -42,23 +42,16 @@
 ## ui
 
 - add message when browser is not supported ✅
-- tell them boldly no network has not been set up.  ✅ 
-- bigger error when no chain connected
-- make address box editable on setup Files screen
+- tell them boldly no network has not been set up. ✅
+- bigger error when no chain connected ✅
+- make address box editable on setup Files screen ✅
 - move $ in decimals to the bottom
-- - can not move forward by hitting continue till we also have ABI
+- can not move forward by hitting continue till we also have ABI ✅
 - ignore recording of ga & clarity in dev
 - title of app says React App ✅
 - or Connect -> to or MetaMask ✅
 - connect tour & Learn more to -> get started ✅
 - update home page video ✅
-- make sync be one button
-  - opens a modal, where it explains what is needed
-  - then user can pick sync directory or file
-- make connect one button
-  - user hits connect to get started
-  - opens a modal, where we explain what is needed
-  - then user picks RPC or metamask
 
 ## bug
 
@@ -84,7 +77,7 @@
   - showDirectoryPicker does not work ✅
   - disable buttons which won't work ✅
 - not fetching abi when connected to metamask
-- address field should either be editable or not be there
+- address field should either be editable or not be there ✅
 - shows continue button, when there is no address, just a contract
 - fix name of worker file
 - fix name of woker instance from instance to something else
@@ -184,3 +177,13 @@
 
 - can disappearing abi tell us, that there is a compile error.
   - in foundry file becomes empty when there is compilation error.
+  -
+
+## sidekik-notification
+
+- use `osascript -e` to call `display notification` when there is a compile error
+
+```
+osascript -e 'display notification "hello world\! This is a longer message and we would like to see how is it going to be displayed." with title "Greeting" subtitle "More text"'
+```
+

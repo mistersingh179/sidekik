@@ -80,6 +80,7 @@ export default function FilesInput(props) {
   const setupDirAccess = async (pathId, evt) => {
     let directoryHandle;
     try {
+      evt.target.blur();
       directoryHandle = await window.showDirectoryPicker({ id: pathId });
       const alreadyExists = handles.find(
         (item) =>
@@ -99,6 +100,7 @@ export default function FilesInput(props) {
 
   const setupFileAccess = async (evt) => {
     try {
+      evt.target.blur();
       const inputHandles = await window.showOpenFilePicker({
         types: [
           {
@@ -145,10 +147,11 @@ export default function FilesInput(props) {
           <Tooltip
             hasArrow
             label={canNotAccessFiles ? canNotAccessFilesLabel : syncDirLabel}
-            shouldWrapChildren
+            shouldWrapChildren={true}
           >
             <Button
               onClick={setupDirAccess.bind(this, "dirPath")}
+              onClick={() => alert("foo")}
               isDisabled={canNotAccessFiles}
             >
               Sync Directory
@@ -175,7 +178,7 @@ export default function FilesInput(props) {
           <Wrap>
             {handles.map((handle) => (
               <WrapItem key={`${handle.name}-${handle.kind}`}>
-                <Tag size={"md"} borderRadius="full">
+                <Tag px={2} fontSize={"0.8em"} py={1} borderRadius="xl">
                   <TagLabel>
                     {handle.name}-{handle.kind}
                   </TagLabel>

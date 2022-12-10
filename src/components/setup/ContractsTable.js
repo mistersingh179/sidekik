@@ -32,23 +32,96 @@ import SetupContractManually from "./SetupContractManually";
 import { buildDisplayAddress } from "../../helpers";
 import { ethers } from "ethers";
 import pluralize from "pluralize";
-
+import { forwardRef } from "react";
 const {
   utils: { isAddress, Interface, FormatTypes },
   constants: { AddressZero },
 } = ethers;
 
+const RoundedSpacedBadge = forwardRef((props, ref) => {
+  const { children, ...rest } = props;
+  return (
+    <Badge
+      ref={ref}
+      fontSize={"0.8em"}
+      px={2}
+      py={1}
+      borderRadius="xl"
+      {...rest}
+    >
+      {children}
+    </Badge>
+  );
+});
+
+const AddressTag = ({ address, found }) => {
+  if (!address) {
+    return (
+      <Tooltip
+        hasArrow
+        label={
+          `The address of this contract has not been uploaded. ` +
+          `You can either upload additional files which have the address or ` +
+          `just click on the edit action & manually enter the address.`
+        }
+      >
+        <RoundedSpacedBadge colorScheme="red">Missing</RoundedSpacedBadge>
+      </Tooltip>
+    );
+  } else if (!isAddress(address)) {
+    return (
+      <Tooltip
+        hasArrow
+        label={
+          `The address uploaded for this contract is invalid.` +
+          `You can either upload different files which have the correct address or ` +
+          `just click on the edit action & manually enter the address.`
+        }
+      >
+        <RoundedSpacedBadge colorScheme="red">
+          {buildDisplayAddress(address)} – Invalid
+        </RoundedSpacedBadge>
+      </Tooltip>
+    );
+  } else if (!found) {
+    return (
+      <Tooltip
+        hasArrow
+        label={
+          `The address uploaded for this contract was not found on the chain. ` +
+          `Either connect to the correct chain where this contract is deployed ` +
+          `or upload different files which have the correct address ` +
+          `or just click on the edit action & manually enter the address.`
+        }
+      >
+        <RoundedSpacedBadge colorScheme="red">
+          {buildDisplayAddress(address)} – Not Found
+        </RoundedSpacedBadge>
+      </Tooltip>
+    );
+  } else {
+    return (
+      <Tooltip hasArrow label={`Contract Code Found`}>
+        <RoundedSpacedBadge colorScheme="green">
+          {buildDisplayAddress(address)}
+        </RoundedSpacedBadge>
+      </Tooltip>
+    );
+  }
+};
+
 const AbiTag = ({ abi }) => {
   if (!abi || abi.length == 0) {
     return (
       <Tooltip
+        hasArrow
         label={
           `The ABI of this contract has not been uploaded. ` +
           `You can upload additional files which have the ABI or ` +
           `just upload your artifacts directory as they have ABI's of all contracts being used.`
         }
       >
-        <Badge colorScheme="red">Missing</Badge>
+        <RoundedSpacedBadge colorScheme="red">Missing</RoundedSpacedBadge>
       </Tooltip>
     );
   }
@@ -62,6 +135,7 @@ const AbiTag = ({ abi }) => {
     return (
       <>
         <Tooltip
+          hasArrow
           label={
             `ABI has ` +
             `${fragCount} ${pluralize("fragement", fragCount)}, ` +
@@ -70,12 +144,12 @@ const AbiTag = ({ abi }) => {
             `${fnCount} ${pluralize("function", fnCount)}.`
           }
         >
-          <Badge colorScheme="green">Found</Badge>
+          <RoundedSpacedBadge colorScheme="green">Found</RoundedSpacedBadge>
         </Tooltip>
       </>
     );
   } catch (e) {
-    return <Badge colorScheme="red">Not Found</Badge>;
+    return <RoundedSpacedBadge colorScheme="red">Not Found</RoundedSpacedBadge>;
   }
 };
 
@@ -131,29 +205,10 @@ export default function ContractsTable(props) {
               <Tr key={name}>
                 <Td>{name}</Td>
                 <Td>
-                  <InputGroup size={"sm"}>
-                    <Input
-                      isReadOnly={true}
-                      value={buildDisplayAddress(contracts[name].address)}
-                      onChange={handleInputChange.bind(this, name)}
-                    />
-                    <InputRightElement>
-                      {contracts[name].found && (
-                        <Tooltip label={"Found Contract Code"}>
-                          <CheckIcon color={"green.400"} />
-                        </Tooltip>
-                      )}
-                      {!contracts[name].found && (
-                        <Tooltip
-                          label={
-                            "Unable to find contract code on the connected contract chain"
-                          }
-                        >
-                          <WarningIcon color={"red.400"} />
-                        </Tooltip>
-                      )}
-                    </InputRightElement>
-                  </InputGroup>
+                  <AddressTag
+                    address={contracts[name]?.address}
+                    found={contracts[name]?.found}
+                  />
                 </Td>
                 <Td>
                   <AbiTag abi={contracts[name].abi} />

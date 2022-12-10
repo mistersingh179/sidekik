@@ -250,7 +250,21 @@ wallet
   - allow adding own exclude list. you may want to exclude oz, build, build-info etc., .env file 
 - be able to parse files where the chain name is in the name of the file e.g. `mumbai_auction.json`
 - add presets for abi like erc20, 721 etc.
-
+- make sync be one button
+  - opens a modal, where it explains what is needed
+  - then user can pick sync directory or file
+- make connect one button
+  - user hits connect to get started
+  - opens a modal, where we explain what is needed
+  - then user picks RPC or metamask
+- hardhat plugin
+  - so they can call a function after deploy.
+    - and then we get the address & abi
+    - function can write to a server
+    - or function can write to disk
+    - think on what's easiest
+  - could be a save-address-and-abi plugin
+    - just saves address-and-abi
 # bugs
 - display Number should not say Eth, but say 10^18 etc.
   - for example output of Dai should say 55 Million Dai, not 55 Million Eth
