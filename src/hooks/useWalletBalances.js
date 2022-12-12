@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { GlobalContext } from "../contexts";
 import { ethers } from "ethers";
+import useDebounce from "./useDebounce";
 const {
   constants: { EtherSymbol },
   BigNumber,
@@ -17,6 +18,8 @@ export default function useWalletBalances(
 ) {
   const [walletBalanceHash, updateWalletBalanceHash] = useState({});
 
+  const debouncedContractAddresses = useDebounce(contractAddresses, 200);
+
   const refreshAllBalances = useCallback(async () => {
     const updatedBalances = {};
     const addresses = [
@@ -24,12 +27,6 @@ export default function useWalletBalances(
       ...contractAddresses,
       ...impersonatedAddresses,
     ];
-    // console.debug(
-    //   "in refreshAllBalances with: ",
-    //   chainAddresses,
-    //   contractAddresses,
-    //   impersonatedAddresses
-    // );
     if (chainProvider) {
       const balanceResults = await Promise.allSettled(
         addresses.map((address) => chainProvider.getBalance(address))
@@ -46,7 +43,12 @@ export default function useWalletBalances(
         return { ...prevState, ...updatedBalances };
       });
     }
-  }, [chainProvider, contractAddresses, chainAddresses, impersonatedAddresses]);
+  }, [
+    chainProvider,
+    debouncedContractAddresses,
+    chainAddresses,
+    impersonatedAddresses,
+  ]);
 
   useEffect(() => {
     refreshAllBalances();
@@ -54,7 +56,7 @@ export default function useWalletBalances(
     chainProvider,
     chainAddresses,
     impersonatedAddresses,
-    contractAddresses,
+    debouncedContractAddresses,
     walletAddress,
     refreshAllBalances,
   ]);
