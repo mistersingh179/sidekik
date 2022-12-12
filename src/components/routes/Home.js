@@ -6,23 +6,29 @@ import { useEffect } from "react";
 
 export default function Home(props) {
   useEffect(() => {
-    try {
-      const intercomId = window.Intercom("getVisitorId");
-      window.clarity("set", "IntercomVisitorId", intercomId);
-      window.clarity("identify", intercomId);
-    } catch (e) {}
-  }, [window?.Intercom?.booted]);
+    if (window.Intercom && window.clarity) {
+      try {
+        const intercomId = window.Intercom("getVisitorId");
+        window.clarity("set", "IntercomVisitorId", intercomId);
+        window.clarity("identify", intercomId);
+      } catch (e) {}
+    }
+  }, [window.Intercom?.booted, window.clarity]);
 
   useEffect(() => {
-    window.Intercom("boot", {
-      api_base: "https://api-iam.intercom.io",
-      app_id: "vesl7md6",
-    });
-  }, []);
+    if (window.Intercom) {
+      window.Intercom("boot", {
+        api_base: "https://api-iam.intercom.io",
+        app_id: "vesl7md6",
+      });
+    }
+  }, [window?.Intercom]);
 
   const location = useLocation();
   useEffect(() => {
-    window.Intercom("update");
+    if (window.Intercom) {
+      window.Intercom("update");
+    }
   }, [location]);
 
   return (

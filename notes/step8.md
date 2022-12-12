@@ -47,7 +47,7 @@
 - make address box editable on setup Files screen ✅
 - move $ in decimals to the bottom
 - can not move forward by hitting continue till we also have ABI ✅
-- ignore recording of ga & clarity in dev
+- ignore recording of ga & clarity in dev ✅
 - title of app says React App ✅
 - or Connect -> to or MetaMask ✅
 - connect tour & Learn more to -> get started ✅
