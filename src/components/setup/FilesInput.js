@@ -151,7 +151,6 @@ export default function FilesInput(props) {
           >
             <Button
               onClick={setupDirAccess.bind(this, "dirPath")}
-              onClick={() => alert("foo")}
               isDisabled={canNotAccessFiles}
             >
               Sync Directory
