@@ -55,7 +55,7 @@ export default function (props) {
     }
   }, [contractNames]);
 
-  const isLazy = true; //contractNames.length > 3;
+  const isLazy = contractNames.length >= 20;
   return (
     <>
       <Tabs isLazy={isLazy} variant={"enclosed-colored"} pt={5} size={"md"}>

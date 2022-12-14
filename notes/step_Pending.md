@@ -273,6 +273,12 @@ wallet
   - from one bubble, then navigate to a connected function's bubble
   - or go to another disconnected bubble
   - one bubble per function so we should see lots of function bubles all using same modifier
+  - connect between contracts too, 
+  - color each contract different or distinguish them
+  - run a function and trace how it runs, inputs and outputs
+    - e.g. if we run a uniswap swap, we can see the data go from 1 contract to all contracts and then back
+    - allow to run slowly function by function
+    - inspect bytes at each function level
 
 # bugs
 - display Number should not say Eth, but say 10^18 etc.

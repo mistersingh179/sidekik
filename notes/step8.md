@@ -117,8 +117,9 @@
 
 ## bugs from chillipaneer
 
-> I can't upload a file or sync to a directory errror:Uncaught (in promise) TypeError: window.showOpenFilePicker is not a function ✅
-> polling of local server appears to still be happening even when connected with metamask
+> I can't upload a file or sync to a directory ✅
+> errror:Uncaught (in promise) TypeError: window.showOpenFilePicker is not a function ✅
+> polling of local server appears to still be happening even when connected with metamask ✅
 > and none of the contact links connect to anything ✅
 
 ## bugs from chillipaneer on live session
@@ -132,25 +133,26 @@
 ## feedback form austin
 
 > put last used function on top
-> preserve values
+> preserve values 🚧
 > show contract address on top
-> re-run a tx
+> re-run a tx 🚧
 
 ## more feedback from slivertongue
 
-> when i switch out between contracts the inputs of the contract im switching out of disappear, would be great to keep them
-> would be great to split the screen so i dont have to tab in and out
+> when I switch out between contracts the inputs of the contract im switching out of disappear  🚧
+> would be great to split the screen so i don't have to tab in and out
 
 ## more bugs from chillipaneer
 
-> yeah. those buttons are working with chrome, but not with Brave, even with shields down.
-> They're both constantly polling localhost:8545 even when metamask connected and RPC URL option is disabled
-> have pinged you on twitter
+> yeah. those buttons are working with chrome, but not with Brave, even with shields down. ✅
+> They're both constantly polling localhost:8545 even when metamask connected and RPC URL option is disabled ✅
 
 ## Extra feature request from silvertongue:
 
-- I end up copy pasting a lot of the same variables when I am testing, so it would be great to have a way to 1. have variables ready in the drop down for certain parameters or 2. have them directly rendered into the input field so I don't have to go for a copy / paste of 10 arguments every time it reloads
-  LMK if all that is clear.
+- I end up copy pasting a lot of the same variables when I am testing, so it would be great to have a way to 
+- 1. have variables ready in the drop down for certain parameters or
+- 2. have them directly rendered into the input field 
+- so I don't have to go for a copy / paste of 10 arguments every time it reloads
 
 ## documentation
 
