@@ -58,6 +58,17 @@ export const GlobalProvider = (props) => {
       return newState;
     });
   };
+  const removeDirChecksum = (name) => {
+    setFilesChecksum((prevState) => {
+      const newState = Object.keys(prevState).reduce((acc, cv) => {
+        if(cv.indexOf(name) !== 0){
+          acc[cv] = prevState[cv];
+        }
+        return acc;
+      }, {})
+      return newState;
+    });
+  }
 
   const {
     processRpcUrl,
@@ -495,6 +506,7 @@ export const GlobalProvider = (props) => {
         addHandle,
         removeHandle,
         removeFileChecksum,
+        removeDirChecksum,
         readAgain,
         filePollingInterval,
         updateFilePollingInterval,

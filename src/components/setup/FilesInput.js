@@ -36,6 +36,7 @@ export default function FilesInput(props) {
     addHandle,
     removeHandle,
     removeFileChecksum,
+    removeDirChecksum,
     readAgain,
     filePollingInterval,
     updateFilePollingInterval,
@@ -95,6 +96,16 @@ export default function FilesInput(props) {
       }
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  const fileTagCloseHandler = (handle) => {
+    console.log("going to delete handle: ", handle.name, handle.kind);
+    removeHandle(handle);
+    if (handle.kind === "file") {
+      removeFileChecksum(handle.name);
+    } else if (handle.kind === "directory") {
+      removeDirChecksum(handle.name);
     }
   };
 
@@ -181,13 +192,7 @@ export default function FilesInput(props) {
                   <TagLabel>
                     {handle.name}-{handle.kind}
                   </TagLabel>
-                  <TagCloseButton
-                    onClick={() => {
-                      console.log("going to delete handle: ", handle.name);
-                      removeHandle(handle);
-                      removeFileChecksum(handle.name);
-                    }}
-                  />
+                  <TagCloseButton onClick={fileTagCloseHandler.bind(this, handle)} />
                 </Tag>
               </WrapItem>
             ))}

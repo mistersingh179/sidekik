@@ -265,6 +265,15 @@ wallet
     - think on what's easiest
   - could be a save-address-and-abi plugin
     - just saves address-and-abi
+- separate screen to visualize the contract
+  - Create bubbles for all inputs & outputs
+  - connects them via lines
+  - size or color shade is dependent on the number of lines/complexities etc.
+  - click in to a bubble, read the code, interact with it, 
+  - from one bubble, then navigate to a connected function's bubble
+  - or go to another disconnected bubble
+  - one bubble per function so we should see lots of function bubles all using same modifier
+
 # bugs
 - display Number should not say Eth, but say 10^18 etc.
   - for example output of Dai should say 55 Million Dai, not 55 Million Eth

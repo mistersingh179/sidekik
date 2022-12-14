@@ -68,27 +68,25 @@
 - when names are same it keeps reading over & over ✅
   - makes multiple calls to chain for balance & code ✅
   - store path of file. ✅
-- every transaction leads to a bunch of getBalance calls
-- when no network, it is reading every 1 second, and flashing the input contracts
-- pending tx via metamask did not show spinner while tx was being mined
+- every transaction leads to a bunch of getBalance calls ✅
+- when no network, it is reading every 1 second, and flashing the input contracts ✅
 - unable to use on brave ✅
 - show message asking to use chrome ✅
   - showOpenFilePicker does not work ✅
   - showDirectoryPicker does not work ✅
   - disable buttons which won't work ✅
-- not fetching abi when connected to metamask
 - address field should either be editable or not be there ✅
 - shows continue button, when there is no address, just a contract
-- fix name of worker file
-- fix name of woker instance from instance to something else
-- refactor contract missing messaging to be when chain - yes & contracts - no
-- refactor processRpcUrl to have proper if statement for instance.current
-- removing and adding directory does not read its files which were before removed.
-  - seems like it still has cache even though it was removed.
+- fix name of worker file ✅
+- fix name of woker instance from instance to something else ✅
+- refactor processRpcUrl to have proper if statement for `instance.current` ✅
+- removing and adding directory does not read its files which were before removed. ✅
+  - seems like it still has cache even though it was removed. ✅
+- pending tx via metamask did not show spinner while tx was being mined
+- not fetching abi when connected to metamask
 
-### bug - slowness / performance issue when syncing directory
+### bug - slowness / performance issue when syncing directory ✅
 
-- we are using md5, will sh1 be faster
 - read files in a worker thread ✅
   - this is to not block UI when it is reading the disk ✅
   - make 1 persistent worker for better performance ✅
@@ -116,21 +114,12 @@
 - When I try to pass in an empty array: [] as a bytes[] arguments, it returns an error for some reason ✅
 - That happens when I try to pass in the empty array as part of a struct, like Transaction for instance ✅
 
-## more from silvertongue
-
-- how to fake things such as block.timestamp
-- @MisterSingh - other future feature request -> can you give me ability to organize my functiosn in the order that I want too? and for that order to be saved - would be nice to prevent me from scrolling up and down unnecessarily while I'm testing
-- > and another additional - most likely more important feature - the ability to create a "FLOW" => I can order transactions in a specific order with their placeholder / pre-determined inputs and trigger them, so that I don't have to click through A -> B -> C to see the result of C every time - unsure if that is clear?
 
 ## bugs from chillipaneer
 
-> nice. sidekik looks like it will be awesome.
-> I stuck with remix for something recently just because it made it easy to interact with the contracts on testnet.
-> but it looks like the app is still being built.
-> I can't upload a file or sync to a directory errror:Uncaught (in promise) TypeError: window.showOpenFilePicker is not a function
+> I can't upload a file or sync to a directory errror:Uncaught (in promise) TypeError: window.showOpenFilePicker is not a function ✅
 > polling of local server appears to still be happening even when connected with metamask
-> and none of the contact links connect to anything
-> let me know if I can help out with testing. It looks like a killer tool
+> and none of the contact links connect to anything ✅
 
 ## bugs from chillipaneer on live session
 
@@ -177,13 +166,16 @@
 
 - can disappearing abi tell us, that there is a compile error.
   - in foundry file becomes empty when there is compilation error.
-  -
+
+## ts definition builder
+- use abi files to build type definitions
 
 ## sidekik-notification
 
-- use `osascript -e` to call `display notification` when there is a compile error
+- use `osascript -e` to call `display notification` when there is a compile error ✅
 
-```
-osascript -e 'display notification "hello world\! This is a longer message and we would like to see how is it going to be displayed." with title "Greeting" subtitle "More text"'
-```
+## feedback from blue taxi from toronto
+
+- I'm curious, is there any way for contracts I put on here to be saved? Everytime I refresh or disconnect metamask they dissapear which makes it kinda pointless.
+- Using it for a live chain not for hardhat*
 
