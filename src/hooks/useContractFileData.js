@@ -14,6 +14,7 @@ const TYPES = {
   MARK_CONTRACT_FOUND: "MARK_CONTRACT_FOUND",
   REMOVE_CONTRACT: "REMOVE_CONTRACT",
   ADD_CONTRACT: "ADD_CONTRACT",
+  REPLACE_ALL_CONTRACTS: "REPLACE_ALL_CONTRACTS",
 };
 
 /*
@@ -28,7 +29,7 @@ const TYPES = {
 
 export default function useContractFileData() {
   const reducer = (state, action) => {
-    // console.debug("in reducer with: ", action);
+    // console.debug("in useContractFileData with action: ", action.type);
 
     switch (action.type) {
       case TYPES.ADD_CONTRACT: {
@@ -74,6 +75,10 @@ export default function useContractFileData() {
         delete newState[action.name];
         return newState;
       }
+      case TYPES.REPLACE_ALL_CONTRACTS: {
+        const newState = { ...action.contracts };
+        return newState;
+      }
       default:
         return state;
     }
@@ -112,6 +117,13 @@ export default function useContractFileData() {
       found: found,
     });
   };
+  const replaceAllContracts = (contracts) => {
+    dispatch({
+      type: TYPES.REPLACE_ALL_CONTRACTS,
+      contracts,
+    });
+  };
+  window.replaceAllContracts = replaceAllContracts;
 
   return {
     contracts,
@@ -119,5 +131,6 @@ export default function useContractFileData() {
     addContractAbi,
     removeContract,
     markContractFound,
+    replaceAllContracts,
   };
 }

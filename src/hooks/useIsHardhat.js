@@ -26,7 +26,7 @@ export function useIsHardhat(chainProvider) {
           console.log("it is not. that's cool 👍. lets proceed 🛺.");
           setIsHardhat(false);
         }
-        console.clear();
+        process.env.NODE_ENV !== "development" && console.clear();
         console.log("yay! 🎉🥳🎉. RPC connection valid ✅");
         console.log("🚧 🚦 🚧 to proceed forward 🚜 and explore 🏗 contracts 🗞 \n" +
         "tell sidekik the contract's address 🏠 & its ABI ‍💾. \n" +

@@ -279,7 +279,17 @@ wallet
     - e.g. if we run a uniswap swap, we can see the data go from 1 contract to all contracts and then back
     - allow to run slowly function by function
     - inspect bytes at each function level
-
+- workspaces
+  - default is local workspace stored in LC
+  - create a new workspace give it name. 
+  - each work space has its own set of data like contracts
+  - convert an existing workspace to a shared workspace or create a new shared workspace,
+  - this creates a new workspace on server, stores data on server and gives back an id for it.
+  - link which can be shared and opens the shared workspace from the workspace name.
+  - changes to shared workspace are stored back on server
+  - locally store all your workspaces, local ones you created, or shared ones you created, or shared ones you received & opened
+  - able to select any workspace in UI, this hydrates from that workspace, and stores back to that workspace.
+  
 # bugs
 - display Number should not say Eth, but say 10^18 etc.
   - for example output of Dai should say 55 Million Dai, not 55 Million Eth
@@ -314,3 +324,28 @@ wallet
 - do something with flashbots
 - do something with chainlink
 - do something with zkSync
+
+## features
+- transfer & transferFrom, should be together
+- convert boolean to dropdown with false selected
+  - this will prevent errors
+- faster way to enter data
+  - save all input & output data to context cache
+  - add option for dropdowns everywhere
+  - refactor address to use same pattern
+  - build modal to select values from cache
+  - make dropdowns driven from settings
+- do signatures
+  - many times when it wants bytes from signing something
+  - able to type something in, have it signed & then be put in
+
+## ui
+- when things dont work developers go to dev tools
+  - fix all messaging there
+  - point them to docs from there
+
+## from silvertongue
+
+- how to fake things such as block.timestamp
+- @MisterSingh - other future feature request -> can you give me ability to organize my functiosn in the order that I want too? and for that order to be saved - would be nice to prevent me from scrolling up and down unnecessarily while I'm testing
+- > and another additional - most likely more important feature - the ability to create a "FLOW" => I can order transactions in a specific order with their placeholder / pre-determined inputs and trigger them, so that I don't have to click through A -> B -> C to see the result of C every time - unsure if that is clear?

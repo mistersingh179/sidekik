@@ -24,7 +24,7 @@ import md5 from "md5";
 import { useIsHardhat } from "../hooks/useIsHardhat";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import worker from "workerize-loader?name=bg!../workers/bg";
+import BgWorker from "workerize-loader?name=bg!../workers/bg";
 
 import useRecursiveTimeout from "../hooks/useRecursiveTimeout";
 
@@ -43,8 +43,8 @@ const ignoredDirNames = ["cache", "node_modules"];
 export const GlobalProvider = (props) => {
   const { children } = props;
 
-  const workerRef = useRef();
-  window.workerRef = workerRef;
+  const [bgWorker, setBgWorker] = useState();
+  window.w = bgWorker;
   const [filesChecksum, setFilesChecksum] = useState({});
   window.filesChecksum = filesChecksum;
   const setFileChecksum = (name, md5CheckSum) => {
@@ -61,14 +61,14 @@ export const GlobalProvider = (props) => {
   const removeDirChecksum = (name) => {
     setFilesChecksum((prevState) => {
       const newState = Object.keys(prevState).reduce((acc, cv) => {
-        if(cv.indexOf(name) !== 0){
+        if (cv.indexOf(name) !== 0) {
           acc[cv] = prevState[cv];
         }
         return acc;
-      }, {})
+      }, {});
       return newState;
     });
-  }
+  };
 
   const {
     processRpcUrl,
@@ -77,7 +77,7 @@ export const GlobalProvider = (props) => {
     isRpcValid,
     localProvider,
     localNetwork,
-  } = useRpcUrlProcessor(workerRef);
+  } = useRpcUrlProcessor(bgWorker);
 
   const {
     injectedProvider,
@@ -91,6 +91,7 @@ export const GlobalProvider = (props) => {
   const chainNetwork = injectedNetwork?.chainId
     ? injectedNetwork
     : localNetwork;
+  window.chainNetwork = chainNetwork;
   const chainId = chainNetwork.chainId;
   const chainName = getChainName(chainId);
 
@@ -247,18 +248,20 @@ export const GlobalProvider = (props) => {
   };
 
   useEffect(() => {
-    workerRef.current = worker();
+    const w = BgWorker();
+    setBgWorker(w);
     return () => {
-      workerRef.current.terminate();
+      w.terminate();
     };
   }, []);
 
   const readFileContent = async (fileHandle, prefix = []) => {
+    // console.debug("in readFileContent with: ", fileHandle, prefix);
     // const fileJsonObj = await readJsonObjFromFileHandle(fileHandle);
     // const fileStringObj = JSON.stringify(fileJsonObj);
     // console.log("STARTING Worker");
     // let workerRef = worker();
-    const fileMd5 = await workerRef.current.getFileMd5(fileHandle);
+    const fileMd5 = await bgWorker.getFileMd5(fileHandle);
     // workerRef.terminate();
     // console.log("TERMINATED Worker");
     // const {status, fileMd5} = await getMd5(fileHandle);
@@ -470,7 +473,7 @@ export const GlobalProvider = (props) => {
     let intervalHandler;
     if (!isRpcValid && !injectedProvider) {
       intervalHandler = setInterval(() => {
-          processRpcUrl();
+        processRpcUrl();
       }, [1000]);
     } else {
       clearInterval(intervalHandler);

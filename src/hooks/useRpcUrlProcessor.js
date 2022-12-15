@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ethers } from "ethers";
 
-export default function useRpcUrlProcessor(workerRef) {
+export default function useRpcUrlProcessor(bgWorker) {
   const [rpcUrl, updateRpcUrl] = useState("http://127.0.0.1:8545");
   const [isRpcValid, updateIsRpcValid] = useState(true);
   const [localProvider, updateLocalProvider] = useState(null);
@@ -9,10 +9,11 @@ export default function useRpcUrlProcessor(workerRef) {
     chainId: null,
     name: null,
   });
+  window.localNetwork = localNetwork;
   const processRpcUrl = useCallback(async () => {
-    if (workerRef.current) {
+    if (bgWorker && rpcUrl) {
       try {
-        const fetchedChainId = await workerRef.current.fetchChainId(rpcUrl);
+        const fetchedChainId = await bgWorker.fetchChainId(rpcUrl);
         if (fetchedChainId) {
           const localProvider = new ethers.providers.JsonRpcProvider(
             rpcUrl ? rpcUrl : true
@@ -46,12 +47,12 @@ export default function useRpcUrlProcessor(workerRef) {
         updateIsRpcValid(false);
       }
     }
-  }, [rpcUrl]);
+  }, [bgWorker, rpcUrl]);
 
   useEffect(() => {
-    console.clear();
+    process.env.NODE_ENV !== "development" && console.clear();
     processRpcUrl();
-  }, [workerRef.current, rpcUrl]);
+  }, [bgWorker, rpcUrl]);
 
   return {
     processRpcUrl,
