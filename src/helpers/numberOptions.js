@@ -17,10 +17,10 @@ export const OPTS = {
   gwei: "gwei",
   eth: "eth",
   mwei: "mwei",
-  usdc: "usdc",
   date: "date",
   "datetime-utc": "datetime-utc",
   "datetime-local": "datetime-local",
+  usdc: "usdc",
 };
 
 export const OPTS_DISPLAY_VALUES = {
