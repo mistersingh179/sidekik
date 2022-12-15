@@ -301,6 +301,9 @@ wallet
   - be able to repeat a previous tx faster
   - select previous tx as template, modify and repeat
   - name that tx something, so it can be repeated
+- change routes from /contracts to /setup-files unmounts contracts
+  - this means contracts loose all state
+
 # growth
 - setup goerli validator, get goerli eth & setup faucet to get eyeballs
 

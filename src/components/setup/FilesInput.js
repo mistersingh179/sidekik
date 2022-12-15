@@ -40,7 +40,7 @@ export default function FilesInput(props) {
     readAgain,
     filePollingInterval,
     updateFilePollingInterval,
-    isRpcValid,
+    chainProvider,
   } = useContext(GlobalContext);
 
   const { reloadToast, rejectedToast } = useFileReloadToast();
@@ -55,14 +55,14 @@ export default function FilesInput(props) {
   const addressAbiMissingLabel =
     "🚦🚧🚦To continue forward and explore contracts, you first need to sync files or directories " +
     "which give sidekik your contracts address & ABI.";
-  const rpcInvalidLabel =
+  const chainNotAvailableLabel =
     "To continue forward you first need to connect to a valid Blockchain RPC node. " +
     "Either enter the address of your local blockchain node or simply connect to metamask.";
   let continueLabel;
-  if (!hasContractWithAddress) {
+  if (!chainProvider) {
+    continueLabel = chainNotAvailableLabel;
+  } else if (!hasContractWithAddress) {
     continueLabel = addressAbiMissingLabel;
-  } else if (!isRpcValid) {
-    continueLabel = rpcInvalidLabel;
   } else {
     continueLabel = "Lets go 🚀 and explore smart contracts 🔥";
   }
@@ -192,7 +192,9 @@ export default function FilesInput(props) {
                   <TagLabel>
                     {handle.name}-{handle.kind}
                   </TagLabel>
-                  <TagCloseButton onClick={fileTagCloseHandler.bind(this, handle)} />
+                  <TagCloseButton
+                    onClick={fileTagCloseHandler.bind(this, handle)}
+                  />
                 </Tag>
               </WrapItem>
             ))}
@@ -233,7 +235,7 @@ export default function FilesInput(props) {
             <Button
               colorScheme={"teal"}
               rightIcon={<ArrowForwardIcon />}
-              isDisabled={!hasContractWithAddress || !isRpcValid}
+              isDisabled={!hasContractWithAddress || !chainProvider}
             >
               Continue
             </Button>

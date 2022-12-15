@@ -84,6 +84,7 @@
   - seems like it still has cache even though it was removed. ✅
 - pending tx via metamask did not show spinner while tx was being mined
 - not fetching abi when connected to metamask
+- make refreshing not remove all data
 
 ### bug - slowness / performance issue when syncing directory ✅
 
@@ -133,13 +134,13 @@
 ## feedback form austin
 
 > put last used function on top
-> preserve values 🚧
+> preserve values ✅
 > show contract address on top
-> re-run a tx 🚧
+> re-run a tx
 
 ## more feedback from slivertongue
 
-> when I switch out between contracts the inputs of the contract im switching out of disappear  🚧
+> when I switch out between contracts the inputs of the contract im switching out of disappear ✅
 > would be great to split the screen so i don't have to tab in and out
 
 ## more bugs from chillipaneer
@@ -178,6 +179,10 @@
 
 ## feedback from blue taxi from toronto
 
-- I'm curious, is there any way for contracts I put on here to be saved? Everytime I refresh or disconnect metamask they dissapear which makes it kinda pointless.
+- I'm curious, is there any way for contracts I put on here to be saved? Everytime I refresh or disconnect metamask they dissapear which makes it kinda pointless. 🚧
 - Using it for a live chain not for hardhat*
+
+## bug from Cyan Balloon from Denver
+
+- brave continue does not work when connected via metamask ✅
 
