@@ -6,6 +6,7 @@ import {
   RiGasStationLine, RiTimeLine
 } from "react-icons/ri";
 import { ethers } from "ethers";
+import { FaOctopusDeploy } from "react-icons/fa";
 
 const {
   utils: { formatEther, formatUnits },
@@ -14,9 +15,10 @@ const {
 
 export const OPTS = {
   number: "number",
+  mwei: "mwei",
+  oct: "oct",
   gwei: "gwei",
   eth: "eth",
-  mwei: "mwei",
   date: "date",
   "datetime-utc": "datetime-utc",
   "datetime-local": "datetime-local",
@@ -25,6 +27,11 @@ export const OPTS = {
 
 export const OPTS_DISPLAY_VALUES = {
   number: "number",
+  oct: (
+    <Text>
+      10<sup>8</sup> – oct
+    </Text>
+  ),
   gwei: (
     <Text>
       10<sup>9</sup> – gwei
@@ -37,7 +44,7 @@ export const OPTS_DISPLAY_VALUES = {
   ),
   mwei: (
     <Text>
-      10<sup>6</sup> - mwei aka USDC
+      10<sup>6</sup> – mwei aka USDC
     </Text>
   ),
   usdc: <Text>$ in decimals</Text>,
@@ -49,6 +56,7 @@ export const OPTS_DISPLAY_VALUES = {
 export const OPT_ICONS = {
   number: "#",
   mwei: <Icon as={BsMegaphone} />,
+  oct: <Icon as={FaOctopusDeploy} />,
   gwei: <Icon as={RiGasStationLine} />,
   eth: EtherSymbol,
   // eth: <Text fontSize={'sm'}>10<sup>18</sup></Text>,

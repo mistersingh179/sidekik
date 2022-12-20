@@ -80,9 +80,8 @@
 - refactor processRpcUrl to have proper if statement for `instance.current` ✅
 - removing and adding directory does not read its files which were before removed. ✅
   - seems like it still has cache even though it was removed. ✅
-- pending tx via metamask did not show spinner while tx was being mined
-- not fetching abi when connected to metamask
-- make refreshing not remove all data
+- pending tx via metamask did not show spinner while tx was being mined 🚧
+- not fetching abi when connected to metamask 🚧
 
 ### bug - slowness / performance issue when syncing directory ✅
 
@@ -122,19 +121,11 @@
 > and none of the contact links connect to anything ✅
 
 ## bugs from chillipaneer on live session
-
-- auto remove space from pasted in contract address
-- no paste in address dropdown
-- address dropdown blur, removes the value
-- the reason I use remix, because I get these functions UI. now i can switch to hardhat.
+- auto remove space from pasted in contract address 🚧
 - overloaded functions dont work!!! ✅
 
 ## feedback form austin
-
-> put last used function on top
 > preserve values ✅
-> show contract address on top
-> re-run a tx
 
 ## more feedback from slivertongue
 
@@ -146,45 +137,15 @@
 > yeah. those buttons are working with chrome, but not with Brave, even with shields down. ✅
 > They're both constantly polling localhost:8545 even when metamask connected and RPC URL option is disabled ✅
 
-## Extra feature request from silvertongue:
-
-- I end up copy pasting a lot of the same variables when I am testing, so it would be great to have a way to 
-- 1. have variables ready in the drop down for certain parameters or
-- 2. have them directly rendered into the input field 
-- so I don't have to go for a copy / paste of 10 arguments every time it reloads
-
 ## documentation
 
 - update for truffle ✅
 - add path & fs to document for saveContractFile in hardhat ✅
 - also make sure name is correct for saveContractFile in hardhat ✅
 
-## refactor
-
-- put error boundary around each row
-
-## research
-
-- can disappearing abi tell us, that there is a compile error.
-  - in foundry file becomes empty when there is compilation error.
-
-## ts definition builder
-- use abi files to build type definitions
-
 ## sidekik-notification
-
 - use `osascript -e` to call `display notification` when there is a compile error ✅
 
-## feedback from blue taxi from toronto
-
-- I'm curious, is there any way for contracts I put on here to be saved?
-  - stored values should be scoped to the chain id
-    - so localhost contracts, will load when you connect to localhost rpc again
-    - and mainnet contracts will load when you connect to mainnet rpc again
-- Everytime I refresh or disconnect metamask they dissapear which makes it kinda pointless.
-- Using it for a live chain not for hardhat
-
 ## bug from Cyan Balloon from Denver
-
 - brave continue does not work when connected via metamask ✅
 

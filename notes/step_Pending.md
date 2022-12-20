@@ -89,6 +89,7 @@ wallet
   - contract function, each function should have its state in its own component
   - put all addresses, contract addresses, output addresses etc. together in with one reducer
   - customAddress, OutputAddress & ImpersonatedAddress to be made by a common hook
+  - put error boundary around each row
 
 - question
   - should it copy value being displayed or the source value. 
@@ -349,3 +350,27 @@ wallet
 - how to fake things such as block.timestamp
 - @MisterSingh - other future feature request -> can you give me ability to organize my functiosn in the order that I want too? and for that order to be saved - would be nice to prevent me from scrolling up and down unnecessarily while I'm testing
 - > and another additional - most likely more important feature - the ability to create a "FLOW" => I can order transactions in a specific order with their placeholder / pre-determined inputs and trigger them, so that I don't have to click through A -> B -> C to see the result of C every time - unsure if that is clear?
+
+## ts definition builder
+- use abi files to build type definitions
+
+## Extra feature request from silvertongue:
+
+- I end up copy pasting a lot of the same variables when I am testing, so it would be great to have a way to
+- 1. have variables ready in the drop down for certain parameters or
+- 2. have them directly rendered into the input field
+- so I don't have to go for a copy / paste of 10 arguments every time it reloads
+
+## feedback form austin
+
+> put last used function on top
+> show contract address on top
+> re-run a tx
+
+## bugs from chillipaneer on live session
+- no paste in address dropdown
+- address dropdown blur, removes the value
+
+## discovered while trying to use chainlink
+- need to checksum addresses when they are inputted
+- chainlink price feed gives 12 digits, so would be nice to apply 10**-8 to it, to get actual number ✅

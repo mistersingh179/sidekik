@@ -62,6 +62,8 @@ export default function NumberDisplay({ value }) {
     formattedValue = Number(formatUnits(value || 0, 9)).toFixed(4);
   } else if (displayOption === OPTS.mwei) {
     formattedValue = Number(formatUnits(value || 0, 6)).toFixed(4);
+  } else if (displayOption === OPTS.oct) {
+    formattedValue = Number(formatUnits(value || 0, 8)).toFixed(4);
   } else if (displayOption === OPTS.usdc) {
     formattedValue = Number(
       parseFloat(formatEther(value || 0)) * ethPriceInUsd
